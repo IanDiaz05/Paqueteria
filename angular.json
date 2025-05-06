@@ -27,9 +27,16 @@
               }
             ],
             "styles": [
+              "node_modules/bootstrap-icons/font/bootstrap-icons.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+              "src/assets/jquery/jquery.min.js",
+              "src/assets/jquery-easing/jquery.easing.min.js",
+              "src/assets/admin.js"
+            ]
           },
           "configurations": {
             "production": {
