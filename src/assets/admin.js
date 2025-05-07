@@ -5,7 +5,7 @@
 // window.Alpine = Alpine;
 
 // Alpine.start();
-(function($) {
+(function(jQuery) {
   "use strict"; // Start of use strict
 
   // Toggle the side navigation
