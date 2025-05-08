@@ -1,0 +1,117 @@
+<div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-7">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Registrate ahora!</h1>
+                    </div>
+                    <form class="user" (ngSubmit)="onSubmit()" #f="ngForm">
+                        <!-- Nombre -->
+                        <div class="form-group row">
+                          <div class="col-sm-12 mb-3 mb-sm-0">
+                            <input 
+                              type="text" 
+                              class="form-control form-control-user" 
+                              id="name" 
+                              placeholder="Nombre" 
+                              name="name"
+                              [(ngModel)]="name"
+                              required
+                              minlength="3"
+                              #nameInput="ngModel"
+                            >
+                            <div *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)" class="text-danger small mt-1">
+                              <div *ngIf="nameInput.errors?.['required']">El nombre es requerido</div>
+                              <div *ngIf="nameInput.errors?.['minlength']">Mínimo 3 caracteres</div>
+                            </div>
+                          </div>
+                        </div>
+                      
+                        <!-- Email -->
+                        <div class="form-group">
+                          <input 
+                            type="email" 
+                            class="form-control form-control-user" 
+                            id="email" 
+                            placeholder="Correo Electrónico" 
+                            name="email"
+                            [(ngModel)]="email"
+                            required
+                            email
+                            #emailInput="ngModel"
+                          >
+                          <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger small mt-1">
+                            <div *ngIf="emailInput.errors?.['required']">El email es requerido</div>
+                            <div *ngIf="emailInput.errors?.['email']">Ingresa un email válido</div>
+                          </div>
+                        </div>
+                      
+                        <!-- Contraseña y Confirmación -->
+                        <div class="form-group row">
+                          <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input 
+                              type="password" 
+                              class="form-control form-control-user"
+                              id="password" 
+                              placeholder="Contraseña" 
+                              name="password"
+                              [(ngModel)]="password"
+                              required
+                              minlength="6"
+                              #passwordInput="ngModel"
+                            >
+                            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger small mt-1">
+                              <div *ngIf="passwordInput.errors?.['required']">La contraseña es requerida</div>
+                              <div *ngIf="passwordInput.errors?.['minlength']">Mínimo 6 caracteres</div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <input 
+                              type="password" 
+                              class="form-control form-control-user"
+                              id="confirmPassword" 
+                              placeholder="Confirmar Contraseña" 
+                              name="confirmPassword"
+                              [(ngModel)]="confirmPassword"
+                              required
+                              #confirmPasswordInput="ngModel"
+                            >
+                            <div *ngIf="confirmPasswordInput.touched" class="text-danger small mt-1">
+                              <div *ngIf="confirmPasswordInput.errors?.['required']">Confirma tu contraseña</div>
+                              <div *ngIf="password !== confirmPassword && confirmPasswordInput.value">Las contraseñas no coinciden</div>
+                            </div>
+                          </div>
+                        </div>
+                      
+                        <!-- Mensaje de error general -->
+                        <div *ngIf="errorMessage" class="alert alert-danger text-center small">
+                          {{ errorMessage }}
+                        </div>
+                      
+                        <!-- Botón de Registro -->
+                        <button 
+                          type="submit" 
+                          class="btn btn-primary btn-user btn-block"
+                          [disabled]="f.invalid || password !== confirmPassword || isLoading"
+                        >
+                          <span *ngIf="!isLoading">Registrar Cuenta</span>
+                          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                        </button>
+                        
+                        <hr>
+                      </form>
+                    <hr>
+                    <div class="text-center">
+                        <a class="small" href="forgot-password.html">Olvidaste tu contrasena?</a>
+                    </div>
+                    <div class="text-center">
+                        <a class="small" routerLink="/login">Ya tienes una cuenta? Ingresa Ahora!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
