@@ -1,34 +1,47 @@
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"
+    (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
     </button>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
         <div class="topbar-divider d-none d-sm-block"></div>
 
-        <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario</span>
-                <i class="bi bi-person-circle"></i>
+        <li class="nav-item">
+            <div class="dropdown no-arrow">
+                <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                    <i class="bi bi-person-circle lead"></i>
+                </button>
+                <!-- Dropdown - User Information -->
+                <ul class="dropdown-menu shadow-lg animated--grow-in">
+                    <li>
+                        <a class="dropdown-item text-secondary" routerLink="/profile">
+                            <i class="bi bi-person-lines-fill mr-2"></i>
+                            Perfil
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-secondary">
+                            <i class="bi bi-door-open mr-2"></i>
+                            Salir
+                        </a>
+                    </li>
+                </ul>
+              </div>
+        </li>
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <!-- btn de ajustes -->
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="settings" data-toggle="modal" data-target="#settingsModal">
+                <i class="bi bi-gear-wide-connected lead"></i>
+                <!-- <span class="ml-2 d-none d-lg-inline text-gray-600 small">Ajustes</span> -->
             </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown">
-                <a class="dropdown-item text-secondary" routerLink="/profile">
-                    <i class="bi bi-person-lines-fill mr-3"></i>
-                    Perfil
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-secondary"> <!-- (click)="logout() -->
-                    <i class="bi bi-door-open mr-3"></i>
-                    Salir
-                </a>
-            </div>
         </li>
 
     </ul>
