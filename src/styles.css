@@ -9954,6 +9954,12 @@ ARREGLAR, QUE SE MANDE A LLAMAR CUANDO SEA NECESARIO
     background-image: linear-gradient(180deg, #5a5c69 10%, #373840 100%);
     background-size: cover;
   }
+
+  .bg-gradient-custom {
+    background-color: #D91656;
+    background-image: linear-gradient(180deg, #D91656 10%, #640D5F 100%);
+    background-size: cover;
+  }
   
   .bg-gray-100 {
     background-color: #f8f9fc !important;
