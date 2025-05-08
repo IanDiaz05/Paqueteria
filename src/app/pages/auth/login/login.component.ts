@@ -16,32 +16,38 @@ export class LoginComponent {
   rememberMe: boolean = false;
 
   errorMessage: string = '';
-  isLoading: boolean = false; // Para deshabilitar el botón durante el login
+  isLoading: boolean = false;
 
   constructor(private auth: AuthService, private router: Router) {}
 
   onSubmit() {
     this.isLoading = true;
     this.errorMessage = '';
-  
-    // Crear un objeto user con email y password
+
     const user = {
       email: this.email,
       password: this.password
     };
-  
+
     this.auth.login(user).subscribe({
-      next: (response) => {
+      next: (response: any) => {
+        this.isLoading = false;
+
+        // Almacenar el token en localStorage o sessionStorage
         if (this.rememberMe) {
           localStorage.setItem('token', response.token);
         } else {
           sessionStorage.setItem('token', response.token);
         }
-        this.router.navigate(['/dashboard']);
+
+        console.log('Inicio de sesión exitoso:', response.message);
+        this.router.navigateByUrl('/dashboard');
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = 'Credenciales incorrectas. Inténtalo de nuevo.';
+
+        // Mostrar el mensaje de error devuelto por el servidor
+        this.errorMessage = error.error.message || 'Error al iniciar sesión. Inténtalo de nuevo.';
         console.error('Error en el login:', error);
       }
     });
