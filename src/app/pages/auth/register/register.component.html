@@ -2,7 +2,9 @@
     <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-            <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+            <div class="col-lg-5 d-none d-lg-block bg-register-image align-items-center">
+              <img src="estafota.png" alt="estafota logo" class="img-fluid">
+            </div>
             <div class="col-lg-7">
                 <div class="p-5">
                     <div class="text-center">
@@ -23,10 +25,15 @@
                               minlength="3"
                               #nameInput="ngModel"
                             >
-                            <div *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)" class="text-danger small mt-1">
-                              <div *ngIf="nameInput.errors?.['required']">El nombre es requerido</div>
-                              <div *ngIf="nameInput.errors?.['minlength']">Mínimo 3 caracteres</div>
-                            </div>
+                            @if (nameInput.invalid && (nameInput.dirty || nameInput.touched)) {
+                              <div class="text-danger small mt-1">
+                                @if (nameInput.errors?.['required']) {
+                                  El nombre es requerido
+                                } @else if (nameInput.errors?.['minlength']) {
+                                  Mínimo 3 caracteres
+                                }
+                              </div>
+                            }
                           </div>
                         </div>
                       
@@ -43,10 +50,15 @@
                             email
                             #emailInput="ngModel"
                           >
-                          <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger small mt-1">
-                            <div *ngIf="emailInput.errors?.['required']">El email es requerido</div>
-                            <div *ngIf="emailInput.errors?.['email']">Ingresa un email válido</div>
-                          </div>
+                          @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+                            <div class="text-danger small mt-1">
+                              @if (emailInput.errors?.['required']) {
+                                El email es requerido
+                              } @else if (emailInput.errors?.['email']) {
+                                Ingresa un email válido
+                              }
+                            </div>
+                          }
                         </div>
                       
                         <!-- Contraseña y Confirmación -->
@@ -63,10 +75,16 @@
                               minlength="6"
                               #passwordInput="ngModel"
                             >
-                            <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger small mt-1">
-                              <div *ngIf="passwordInput.errors?.['required']">La contraseña es requerida</div>
-                              <div *ngIf="passwordInput.errors?.['minlength']">Mínimo 6 caracteres</div>
-                            </div>
+                            @if (passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)) {
+                              <div class="text-danger small mt-1">
+                                @if (passwordInput.errors?.['required']) {
+                                  La contraseña es requerida
+                                } @else if (passwordInput.errors?.['minlength']) {
+                                  Mínimo 6 caracteres
+                                }
+                              </div>
+                            }
+                            
                           </div>
                           <div class="col-sm-6">
                             <input 
@@ -79,17 +97,27 @@
                               required
                               #confirmPasswordInput="ngModel"
                             >
-                            <div *ngIf="confirmPasswordInput.touched" class="text-danger small mt-1">
-                              <div *ngIf="confirmPasswordInput.errors?.['required']">Confirma tu contraseña</div>
-                              <div *ngIf="password !== confirmPassword && confirmPasswordInput.value">Las contraseñas no coinciden</div>
-                            </div>
+                            @if (confirmPasswordInput.touched) {
+                              <div class="text-danger small mt-1">
+                                @if (confirmPasswordInput.errors?.['required']) {
+                                  Confirma tu contraseña
+                                } @else if (password !== confirmPassword && confirmPasswordInput.value) {
+                                  Las contraseñas no coinciden
+                                }
+                              </div>
+                            }
                           </div>
                         </div>
                       
                         <!-- Mensaje de error general -->
-                        <div *ngIf="errorMessage" class="alert alert-danger text-center small">
-                          {{ errorMessage }}
-                        </div>
+                        @if (errorMessage) {
+                          <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <div>
+                              {{ errorMessage }}
+                            </div>
+                          </div>
+                        }
                       
                         <!-- Botón de Registro -->
                         <button 
@@ -97,8 +125,12 @@
                           class="btn btn-primary btn-user btn-block"
                           [disabled]="f.invalid || password !== confirmPassword || isLoading"
                         >
-                          <span *ngIf="!isLoading">Registrar Cuenta</span>
-                          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                          @if (!isLoading) {
+                            <span>Registrar Cuenta</span>
+                          } @else {
+                            <span class="spinner-border spinner-border-sm" role="status"></span>
+                          }
+                          
                         </button>
                         
                         <hr>

@@ -9,6 +9,6 @@ import { Component, Input } from '@angular/core';
 export class MinicardComponent {
   @Input() borderColor: string = 'primary';
   @Input() title: string = 'Título';
-  @Input() content: string = 'Contenido';
+  @Input() content?: string = 'Contenido';
   @Input() icon: string = 'fas fa-info-circle';
 }

@@ -15,29 +15,33 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
+
   errorMessage: string = '';
   isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    // Verificación adicional por seguridad
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
-
+  
     this.isLoading = true;
     this.errorMessage = '';
-
+  
     this.authService.register({
       name: this.name,
       email: this.email,
       password: this.password
     }).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         this.isLoading = false;
-        this.router.navigate(['/login']);
+        if (response && response.message === 'Usuario registrado correctamente') {
+          this.router.navigateByUrl('/login');
+        } else {
+          this.errorMessage = 'Error inesperado al registrar el usuario.';
+        }
       },
       error: (error) => {
         this.isLoading = false;
