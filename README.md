@@ -4,7 +4,6 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Crear BD en MySQL
 ```
--- Tabla de usuarios (la misma que antes)
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) NOT NULL UNIQUE,
@@ -16,7 +15,6 @@ CREATE TABLE users (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Tabla de direcciones (la misma que antes)
 CREATE TABLE addresses (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -33,7 +31,6 @@ CREATE TABLE addresses (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- TABLA 1: Paquetes (información física del paquete)
 CREATE TABLE packages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   description VARCHAR(255) NOT NULL,
@@ -49,7 +46,6 @@ CREATE TABLE packages (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- TABLA 2: Envíos (información logística del envío)
 CREATE TABLE shipments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tracking_number VARCHAR(20) UNIQUE NOT NULL,
@@ -77,7 +73,6 @@ CREATE TABLE shipments (
   delivery_notes TEXT,
   recipient_signature VARCHAR(255),
   
-  -- Relaciones
   FOREIGN KEY (package_id) REFERENCES packages(id),
   FOREIGN KEY (sender_id) REFERENCES users(id),
   FOREIGN KEY (receiver_id) REFERENCES users(id),
@@ -86,7 +81,6 @@ CREATE TABLE shipments (
   FOREIGN KEY (destination_address_id) REFERENCES addresses(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Tabla de historial (opcional pero recomendada)
 CREATE TABLE shipment_history (
   id INT AUTO_INCREMENT PRIMARY KEY,
   shipment_id INT NOT NULL,
