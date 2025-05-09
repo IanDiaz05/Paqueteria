@@ -18,8 +18,8 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
+    localStorage.clear();
+    sessionStorage.clear();
   }
 
   getDashboard() {
