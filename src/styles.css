@@ -9662,6 +9662,14 @@ ARREGLAR, QUE SE MANDE A LLAMAR CUANDO SEA NECESARIO
   a.text-dark:hover, a.text-dark:focus {
     color: #373840 !important;
   }
+
+  .text-custom {
+    color: #1B4B81 !important;
+  }
+  
+  a.text-custom:hover, a.text-custom:focus {
+    color: #102E50 !important;
+  }
   
   .text-body {
     color: #858796 !important;
@@ -9956,8 +9964,14 @@ ARREGLAR, QUE SE MANDE A LLAMAR CUANDO SEA NECESARIO
   }
 
   .bg-gradient-custom {
-    background-color: #D91656;
-    background-image: linear-gradient(180deg, #D91656 10%, #640D5F 100%);
+    background-color: #BE3D2A;
+    background-image: linear-gradient(180deg, #BE3D2A 10%, #E78B48 100%);
+    background-size: cover;
+  }
+
+  .bg-gradient-custom-dark {
+    background-color: #1B4B81;
+    background-image: linear-gradient(180deg, #1B4B81 10%, #102E50 100%);
     background-size: cover;
   }
   

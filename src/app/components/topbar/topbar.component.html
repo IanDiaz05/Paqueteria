@@ -1,4 +1,6 @@
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" id="topbar">
+
+    <h1 class="h3 mb-0 text-primary">{{ page_title }}</h1>
 
     <!-- Sidebar Toggle (Topbar) -->
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3"
@@ -13,7 +15,7 @@
         <li class="nav-item">
             <div class="dropdown no-arrow">
                 <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario</span>
                     <i class="bi bi-person-circle lead"></i>
                 </button>
                 <!-- Dropdown - User Information -->
@@ -32,6 +34,14 @@
                     </li>
                 </ul>
               </div>
+        </li>
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <li class="nav-item">
+            <button class="btn btn-link nav-link" (click)="toggleTheme()">
+              <i class="bi" [ngClass]="isDarkMode ? 'bi-moon-fill' : 'bi-sun-fill'"></i>
+            </button>
         </li>
 
         <div class="topbar-divider d-none d-sm-block"></div>

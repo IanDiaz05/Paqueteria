@@ -5,6 +5,8 @@ import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { authGuard } from './auth.guard';
+import { inject } from '@angular/core';
+import { PageTitleService } from './services/page-title.service';
 
 export const routes: Routes = [
 
@@ -14,7 +16,13 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-        { path: 'dashboard', component: DashboardComponent },
+        { path: 'dashboard', component: DashboardComponent, resolve: {
+            title: () => {
+                const pageTitleService = inject(PageTitleService);
+                pageTitleService.setTitle('Dashboard');
+                return true;
+            }
+        } },
         // otras rutas internas
         ],
     },

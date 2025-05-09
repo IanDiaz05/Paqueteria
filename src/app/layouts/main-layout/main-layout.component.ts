@@ -14,7 +14,7 @@ export class MainLayoutComponent {
   constructor(private renderer: Renderer2) {}
 
   ngOnInit(): void {
-    this.renderer.removeAttribute(document.body, 'class');
+    this.renderer.removeClass(document.body, 'bg-gradient-primary');
     this.renderer.setAttribute(document.body, 'id', 'page-top');
   }
 }

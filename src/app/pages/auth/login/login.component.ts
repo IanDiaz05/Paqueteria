@@ -37,8 +37,10 @@ export class LoginComponent {
         // Almacenar el token en local o sesion
         if (this.rememberMe) {
           localStorage.setItem('token', response.token);
+          localStorage.setItem('userName', response.name);
         } else {
           sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('userName', response.name);
         }
   
         console.log('Inicio de sesión exitoso:', response.message);
