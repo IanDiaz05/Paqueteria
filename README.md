@@ -198,6 +198,8 @@ app.post('/login', (req, res) => {
       }
 
       const user = results[0];
+      console.log('User:', user); // Verifica el rol del usuario
+
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
         console.warn('Contraseña incorrecta para el usuario:', email);
@@ -206,13 +208,13 @@ app.post('/login', (req, res) => {
 
       // Generar el token
       const token = jwt.sign(
-        { id: user.id },
+        { id: user.id, role: user.role },
         'secreto',
         rememberMe ? {} : { expiresIn: '1h' }
-      );
+      );      
 
       console.log('Inicio de sesión exitoso para el usuario:', email);  
-      res.json({ token, name: user.fname, role: user.role, user_id: user.id, message: 'Inicio de sesión exitoso' });
+      res.json({ token, name: user.fname, role: user.role, message: 'Inicio de sesión exitoso' });
     }
   );
 });
@@ -224,6 +226,9 @@ app.get('/dashboard', (req, res) => {
   
   try {
     const verified = jwt.verify(token, 'secreto');
+    if (verified.role !== 'admin') {
+      return res.status(403).send('Acceso denegado: No tienes permisos suficientes');
+    }
     res.json({ message: `Bienvenido al dashboard, usuario ${verified.id}` });
   } catch (err) {
     res.status(400).send('Token inválido');
