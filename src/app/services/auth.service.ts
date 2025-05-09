@@ -17,6 +17,11 @@ export class AuthService {
     return this.http.post<{ token: string, name: string }>(`${this.apiUrl}/login`, user);
   }
 
+  logout() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+  }
+
   getDashboard() {
     return this.http.get(`${this.apiUrl}/dashboard`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
