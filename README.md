@@ -4,7 +4,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Creación de la BD
 
-```
+````
 create database paqueteria;
 use paqueteria;
 
@@ -91,9 +91,9 @@ FOREIGN KEY (destination_address_id) REFERENCES addresses(id);
   
 
 
-```
+````
 ## Llenar la BD con datos random
-```
+````
 -- Insertar usuarios
 INSERT INTO users (email, password, fname, lname, role) VALUES
 ('cliente1@email.com', 'password123', 'Juan', 'Pérez', 'customer'),
@@ -129,7 +129,7 @@ INSERT INTO shipments (tracking_number, package_id, sender_id, delivery_id, orig
 -- Actualizar algunos envíos con fechas de entrega
 UPDATE shipments SET delivered_at = '2023-11-01 16:30:00', recipient_signature = 'Juan Pérez' WHERE id = 1;
 UPDATE shipments SET delivered_at = '2023-11-03 13:45:00', recipient_signature = 'María Gómez' WHERE id = 2;
-```
+````
 
 ## Servidor Node para BD
 
