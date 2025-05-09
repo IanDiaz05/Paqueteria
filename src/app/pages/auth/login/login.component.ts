@@ -23,30 +23,29 @@ export class LoginComponent {
   onSubmit() {
     this.isLoading = true;
     this.errorMessage = '';
-
+  
     const user = {
       email: this.email,
-      password: this.password
+      password: this.password,
+      rememberMe: this.rememberMe
     };
-
+  
     this.auth.login(user).subscribe({
       next: (response: any) => {
         this.isLoading = false;
-
-        // Almacenar el token en localStorage o sessionStorage
+  
+        // Almacenar el token en local o sesion
         if (this.rememberMe) {
           localStorage.setItem('token', response.token);
         } else {
           sessionStorage.setItem('token', response.token);
         }
-
+  
         console.log('Inicio de sesión exitoso:', response.message);
         this.router.navigateByUrl('/dashboard');
       },
       error: (error) => {
         this.isLoading = false;
-
-        // Mostrar el mensaje de error devuelto por el servidor
         this.errorMessage = error.error.message || 'Error al iniciar sesión. Inténtalo de nuevo.';
         console.error('Error en el login:', error);
       }

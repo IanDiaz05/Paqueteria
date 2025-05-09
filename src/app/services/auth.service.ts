@@ -13,7 +13,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
-  login(user: { email: string, password: string }) {
+  login(user: { email: string, password: string, rememberMe: boolean }) {
     return this.http.post<{ token: string, name: string }>(`${this.apiUrl}/login`, user);
   }
 
