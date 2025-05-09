@@ -1,17 +1,14 @@
 import { Component, Renderer2 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
  constructor(private renderer: Renderer2) { }
-  ngOnInit() {
-    this.renderer.removeClass(document.body, 'bg-gradient-custom');
-    
-  }
 
 
 }

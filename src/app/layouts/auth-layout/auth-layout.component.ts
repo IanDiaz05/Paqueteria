@@ -12,6 +12,6 @@ export class AuthLayoutComponent {
 
   ngOnInit(): void {
     this.renderer.removeAttribute(document.body, 'id');
-    this.renderer.setAttribute(document.body, 'class', 'bg-gradient-custom');
+    this.renderer.setAttribute(document.body, 'class', 'bg-gradient-primary');
   }
 }
