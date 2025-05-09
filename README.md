@@ -2,7 +2,7 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
-## Creacion de la BD
+## Creación de la BD
 
 ```
 CREATE TABLE users (
