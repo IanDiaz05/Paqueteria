@@ -4,25 +4,43 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
-import { authGuard } from './auth.guard';
 import { inject } from '@angular/core';
 import { PageTitleService } from './services/page-title.service';
+import { ClientsTableComponent } from './pages/clients-table/clients-table.component';
+import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
+import { sessionGuard } from './guards/session.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
 
     {
         path: '',
         component: MainLayoutComponent,
-        canActivate: [authGuard],
+        canActivate: [sessionGuard],
         children: [
         { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-        { path: 'dashboard', component: DashboardComponent, resolve: {
+        {   path: 'dashboard',
+            component: DashboardComponent,
+            canActivate: [roleGuard],
+            data: { expectedRole: 'admin' },
+            resolve: {
             title: () => {
                 const pageTitleService = inject(PageTitleService);
                 pageTitleService.setTitle('Dashboard');
                 return true;
             }
         } },
+        {   path: 'clientes',
+            component: ClientsTableComponent,
+            canActivate: [roleGuard],
+            data: { expectedRole: 'admin' },
+            resolve: {
+            title: () => {
+                const pageTitleService = inject(PageTitleService);
+                pageTitleService.setTitle('Nuestros Clientes');
+                return true;
+            }
+        }}
         // otras rutas internas
         ],
     },
@@ -33,6 +51,7 @@ export const routes: Routes = [
         children: [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
+            { path: 'unauthorized', component: UnauthorizedComponent}
         ],
     },
 
