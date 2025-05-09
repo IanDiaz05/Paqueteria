@@ -2,6 +2,88 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
+## Creacion de la BD
+
+```
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  fname VARCHAR(100) NOT NULL,
+  lname VARCHAR(100) NOT NULL,
+  phone VARCHAR(20),
+  role ENUM('customer', 'admin', 'delivery') DEFAULT 'customer',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE addresses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  alias VARCHAR(50) NOT NULL COMMENT 'Casa, Trabajo, etc.',
+  street VARCHAR(255) NOT NULL,
+  ext_number VARCHAR(20),
+  int_number VARCHAR(20),
+  neighborhood VARCHAR(100),
+  city VARCHAR(100) NOT NULL,
+  state VARCHAR(100) NOT NULL,
+  zip_code VARCHAR(10) NOT NULL,
+  country VARCHAR(50) DEFAULT 'México',
+  instructions TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE packages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  description VARCHAR(255) NOT NULL,
+  weight DECIMAL(5,2) NOT NULL COMMENT 'en kg',
+  length DECIMAL(5,2) COMMENT 'en cm',
+  width DECIMAL(5,2) COMMENT 'en cm',
+  height DECIMAL(5,2) COMMENT 'en cm',
+  declared_value DECIMAL(10,2),
+  is_fragile BOOLEAN DEFAULT FALSE,
+  is_perishable BOOLEAN DEFAULT FALSE,
+  is_dangerous BOOLEAN DEFAULT FALSE,
+  special_instructions TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE shipments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tracking_number VARCHAR(20) UNIQUE NOT NULL,
+  package_id INT NOT NULL,
+  sender_id INT NOT NULL,
+  receiver_id INT NOT NULL,
+  delivery_id INT COMMENT 'Repartidor asignado',
+  origin_address_id INT NOT NULL,
+  destination_address_id INT NOT NULL,
+  status ENUM(
+    'registrado', 
+    'recolectado', 
+    'en_centro', 
+    'en_transito', 
+    'en_reparto', 
+    'entregado', 
+    'fallido',
+    'cancelado'
+  ) DEFAULT 'registrado',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  collected_at DATETIME,
+  in_transit_at DATETIME,
+  out_for_delivery_at DATETIME,
+  delivered_at DATETIME,
+  delivery_notes TEXT,
+  recipient_signature VARCHAR(255),
+  
+  FOREIGN KEY (package_id) REFERENCES packages(id),
+  FOREIGN KEY (sender_id) REFERENCES users(id),
+  FOREIGN KEY (receiver_id) REFERENCES users(id),
+  FOREIGN KEY (delivery_id) REFERENCES users(id),
+  FOREIGN KEY (origin_address_id) REFERENCES addresses(id),
+  FOREIGN KEY (destination_address_id) REFERENCES addresses(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+```
+
 ## Servidor Node para BD
 
 ### Instalar dependencias para el server
