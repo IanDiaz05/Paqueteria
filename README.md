@@ -2,58 +2,96 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
-## Development server
+## Servidor Node para BD
 
-To start a local development server, run:
+```js
+const express = require('express');
+const mysql = require('mysql2');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
-```bash
-ng serve
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+// Conexión a MySQL (configura con tus datos de XAMPP)
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'paqueteria'
+});
+
+// Ruta de registro
+app.post('/register', async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  
+  db.query(
+    'INSERT INTO users (email, password, fname, lname) VALUES (?, ?, ?, ?)',
+    [email, hashedPassword, firstName,lastName],
+    (err, result) => {
+      if (err) return res.status(500).json({ message: 'Error al registrar' });
+      res.status(201).json({ message: 'Usuario registrado correctamente' });
+    }
+  );
+});
+
+// Ruta de login
+app.post('/login', (req, res) => {
+  const { email, password, rememberMe } = req.body;
+
+  db.query(
+    'SELECT * FROM users WHERE email = ?',
+    [email],
+    async (err, results) => {
+      if (err) {
+        console.error('Error en la base de datos:', err);
+        return res.status(500).json({ message: 'Error en el servidor' });
+      }
+
+      if (results.length === 0) {
+        console.warn('Usuario no encontrado:', email);
+        return res.status(400).json({ message: 'Usuario no encontrado' });
+      }
+
+      const user = results[0];
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        console.warn('Contraseña incorrecta para el usuario:', email);
+        return res.status(400).json({ message: 'Contraseña incorrecta' });
+      }
+
+      // Generar el token
+      const token = jwt.sign(
+        { id: user.id },
+        'secreto',
+        rememberMe ? {} : { expiresIn: '1h' }
+      );
+
+      console.log('Inicio de sesión exitoso para el usuario:', email);  
+      res.json({ token, name: user.fname, role: user.role, user_id: user.id, message: 'Inicio de sesión exitoso' });
+    }
+  );
+});
+
+// Ruta protegida (ejemplo para dashboard)
+app.get('/dashboard', (req, res) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).send('Acceso denegado');
+  
+  try {
+    const verified = jwt.verify(token, 'secreto');
+    res.json({ message: `Bienvenido al dashboard, usuario ${verified.id}` });
+  } catch (err) {
+    res.status(400).send('Token inválido');
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Servidor corriendo en http://localhost:3000');
+});
+
 ```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
