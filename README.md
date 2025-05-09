@@ -92,6 +92,44 @@ FOREIGN KEY (destination_address_id) REFERENCES addresses(id);
 
 
 ```
+## Llenar la BD con datos random
+```
+-- Insertar usuarios
+INSERT INTO users (email, password, fname, lname, role) VALUES
+('cliente1@email.com', 'password123', 'Juan', 'Pérez', 'customer'),
+('cliente2@email.com', 'password123', 'María', 'Gómez', 'customer'),
+('admin@empresa.com', 'admin123', 'Carlos', 'Ruiz', 'admin'),
+('repartidor1@empresa.com', 'delivery123', 'Luis', 'Martínez', 'delivery'),
+('repartidor2@empresa.com', 'delivery123', 'Ana', 'Sánchez', 'delivery');
+
+-- Insertar direcciones
+INSERT INTO addresses (user_id, type, alias, street, ext_number, neighborhood, city, state, zip_code, country) VALUES
+(1, 1, 'Casa', 'Av. Principal', '123', 'Centro', 'Ciudad de México', 'CDMX', '06000', 'México'),
+(1, 2, 'Trabajo', 'Calle Reforma', '456', 'Juárez', 'Ciudad de México', 'CDMX', '06600', 'México'),
+(2, 1, 'Departamento', 'Boulevard López Mateos', '789', 'San Ángel', 'Guadalajara', 'Jalisco', '44100', 'México'),
+(3, 1, 'Oficina Central', 'Paseo de la Reforma', '101', 'Cuauhtémoc', 'Ciudad de México', 'CDMX', '06500', 'México'),
+(4, 1, 'Domicilio Repartidor', 'Calle Norte', '202', 'Industrial', 'Monterrey', 'Nuevo León', '64000', 'México');
+
+-- Insertar paquetes
+INSERT INTO packages (description, weight, size, declared_value, is_fragile, special_instructions) VALUES
+('Documentos importantes', 0.5, 'S', 500.00, FALSE, 'Entregar en recepción'),
+('Laptop nueva', 2.3, 'M', 15000.00, TRUE, 'Manejar con cuidado - frágil'),
+('Ropa deportiva', 1.8, 'M', 1200.00, FALSE, NULL),
+('Jarrones de cerámica', 4.5, 'L', 3500.00, TRUE, 'FRÁGIL - No voltear'),
+('Libros académicos', 3.2, 'L', 800.00, FALSE, NULL);
+
+-- Insertar envíos
+INSERT INTO shipments (tracking_number, package_id, sender_id, delivery_id, origin_address_id, destination_address_id, status, created_at) VALUES
+('PAQ123456789', 1, 1, 4, 1, 2, 'entregado', '2023-11-01 09:00:00'),
+('PAQ987654321', 2, 2, 5, 3, 1, 'en_reparto', '2023-11-02 10:30:00'),
+('PAQ456123789', 3, 1, 4, 2, 3, 'en_transito', '2023-11-03 11:15:00'),
+('PAQ789456123', 4, 2, NULL, 3, 1, 'registrado', '2023-11-04 14:20:00'),
+('PAQ321654987', 5, 1, 5, 1, 3, 'recolectado', '2023-11-05 16:45:00');
+
+-- Actualizar algunos envíos con fechas de entrega
+UPDATE shipments SET delivered_at = '2023-11-01 16:30:00', recipient_signature = 'Juan Pérez' WHERE id = 1;
+UPDATE shipments SET delivered_at = '2023-11-03 13:45:00', recipient_signature = 'María Gómez' WHERE id = 2;
+```
 
 ## Servidor Node para BD
 
