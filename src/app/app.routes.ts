@@ -10,6 +10,7 @@ import { ClientsTableComponent } from './pages/clients-table/clients-table.compo
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { sessionGuard } from './guards/session.guard';
 import { roleGuard } from './guards/role.guard';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
 
@@ -51,11 +52,11 @@ export const routes: Routes = [
         children: [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
-            { path: 'unauthorized', component: UnauthorizedComponent}
+            { path: 'home', component: HomeComponent}
         ],
     },
 
-    { path: '**', redirectTo: 'dashboard' } // Redirige a login si la ruta no existe
+    { path: '**', redirectTo: 'home' } // Redirige a login si la ruta no existe
 
 
 ];
