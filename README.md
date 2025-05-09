@@ -5,9 +5,10 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ## Creación de la BD
 
 ```
-CREATE DATABASE paqueteria;
-USE paqueteria;
+create database paqueteria;
+use paqueteria;
 
+-- Primero creamos las tablas sin relaciones
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
@@ -31,8 +32,7 @@ CREATE TABLE addresses (
   state VARCHAR(100) NOT NULL,
   zip_code VARCHAR(10) NOT NULL,
   country VARCHAR(50) DEFAULT 'México',
-  instructions TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  instructions TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE packages (
@@ -46,6 +46,7 @@ CREATE TABLE packages (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Ahora creamos shipments sin las FOREIGN KEY
 CREATE TABLE shipments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tracking_number VARCHAR(20) UNIQUE NOT NULL,
@@ -67,14 +68,27 @@ CREATE TABLE shipments (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   delivered_at DATETIME,
   delivery_notes TEXT,
-  recipient_signature VARCHAR(255),
-  
-  FOREIGN KEY (package_id) REFERENCES packages(id),
-  FOREIGN KEY (sender_id) REFERENCES users(id),
-  FOREIGN KEY (delivery_id) REFERENCES users(id),
-  FOREIGN KEY (origin_address_id) REFERENCES addresses(id),
-  FOREIGN KEY (destination_address_id) REFERENCES addresses(id)
+  recipient_signature VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE addresses ADD CONSTRAINT fk_address_user
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+ALTER TABLE shipments ADD CONSTRAINT fk_shipment_package
+FOREIGN KEY (package_id) REFERENCES packages(id);
+
+ALTER TABLE shipments ADD CONSTRAINT fk_shipment_sender
+FOREIGN KEY (sender_id) REFERENCES users(id);
+
+ALTER TABLE shipments ADD CONSTRAINT fk_shipment_delivery
+FOREIGN KEY (delivery_id) REFERENCES users(id);
+
+ALTER TABLE shipments ADD CONSTRAINT fk_shipment_origin
+FOREIGN KEY (origin_address_id) REFERENCES addresses(id);
+
+ALTER TABLE shipments ADD CONSTRAINT fk_shipment_destination
+FOREIGN KEY (destination_address_id) REFERENCES addresses(id);
+  
 
 
 ```
