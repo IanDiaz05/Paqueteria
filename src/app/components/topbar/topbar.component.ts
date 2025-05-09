@@ -14,6 +14,7 @@ import { PageTitleService } from '../../services/page-title.service';
 export class TopbarComponent {
   isDarkMode: boolean = false;
   page_title: string = '';
+  userName: string = '';
   
   constructor(
     public sidebarService: SidebarService,
@@ -24,6 +25,7 @@ export class TopbarComponent {
   ) {}
 
   ngOnInit(): void {
+    this.userName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || 'Usuario';
     this.pageTitleService.title$.subscribe((title) => {
       this.page_title = title;
     });

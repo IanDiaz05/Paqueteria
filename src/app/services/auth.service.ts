@@ -9,7 +9,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(user: { email: string, password: string, name: string }) {
+  register(user: { email: string, password: string, firstName: string, lastName: string }) {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 

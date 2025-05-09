@@ -15,7 +15,7 @@
         <li class="nav-item">
             <div class="dropdown no-arrow">
                 <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario</span>
+                    <span class="mr-2 d-none d-lg-inline small"><strong class="h6">{{ userName }}</strong></span>
                     <i class="bi bi-person-circle lead"></i>
                 </button>
                 <!-- Dropdown - User Information -->
@@ -39,7 +39,7 @@
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <li class="nav-item">
-            <button class="btn btn-link nav-link" (click)="toggleTheme()">
+            <button class="nav-link" (click)="toggleTheme()">
               <i class="bi" [ngClass]="isDarkMode ? 'bi-moon-fill' : 'bi-sun-fill'"></i>
             </button>
         </li>

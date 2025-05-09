@@ -9964,14 +9964,14 @@ ARREGLAR, QUE SE MANDE A LLAMAR CUANDO SEA NECESARIO
   }
 
   .bg-gradient-custom {
-    background-color: #BE3D2A;
-    background-image: linear-gradient(180deg, #BE3D2A 10%, #E78B48 100%);
+    background-color: #7C4585;
+    background-image: linear-gradient(180deg, #7C4585 10%, #3D365C 100%);
     background-size: cover;
   }
 
   .bg-gradient-custom-dark {
-    background-color: #1B4B81;
-    background-image: linear-gradient(180deg, #1B4B81 10%, #102E50 100%);
+    background-color: #4F1C51;
+    background-image: linear-gradient(180deg, #4F1C51 10%, #210F37 100%);
     background-size: cover;
   }
   

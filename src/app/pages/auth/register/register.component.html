@@ -13,24 +13,45 @@
                     <form class="user" (ngSubmit)="onSubmit()" #f="ngForm">
                         <!-- Nombre -->
                         <div class="form-group row">
-                          <div class="col-sm-12 mb-3 mb-sm-0">
+                          <div class="col-sm-6 mb-3 mb-sm-0">
                             <input 
                               type="text" 
                               class="form-control form-control-user" 
-                              id="name" 
+                              id="firstName" 
                               placeholder="Nombre" 
-                              name="name"
-                              [(ngModel)]="name"
+                              name="firstName"
+                              [(ngModel)]="firstName"
                               required
                               minlength="3"
-                              #nameInput="ngModel"
+                              #fnameInput="ngModel"
                             >
-                            @if (nameInput.invalid && (nameInput.dirty || nameInput.touched)) {
+                            @if (fnameInput.invalid && (fnameInput.dirty || fnameInput.touched)) {
                               <div class="text-danger small mt-1">
-                                @if (nameInput.errors?.['required']) {
+                                @if (fnameInput.errors?.['required']) {
                                   El nombre es requerido
-                                } @else if (nameInput.errors?.['minlength']) {
+                                } @else if (fnameInput.errors?.['minlength']) {
                                   Mínimo 3 caracteres
+                                }
+                              </div>
+                            }
+                          </div>
+
+                          <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input 
+                              type="text" 
+                              class="form-control form-control-user" 
+                              id="lastName"
+                              placeholder="Apellido" 
+                              name="lastName"
+                              [(ngModel)]="lastName"
+                              required
+                              minlength="3"
+                              #LnameInput="ngModel"
+                            >
+                            @if (LnameInput.invalid && (LnameInput.dirty || LnameInput.touched)) {
+                              <div class="text-danger small mt-1">
+                                @if (LnameInput.errors?.['required']) {
+                                  El apellido es requerido
                                 }
                               </div>
                             }

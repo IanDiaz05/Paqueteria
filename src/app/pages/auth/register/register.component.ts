@@ -11,7 +11,8 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  name: string = '';
+  firstName: string = '';
+  lastName: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -31,7 +32,8 @@ export class RegisterComponent {
     this.errorMessage = '';
   
     this.authService.register({
-      name: this.name,
+      firstName: this.firstName,
+      lastName: this.lastName,
       email: this.email,
       password: this.password
     }).subscribe({
