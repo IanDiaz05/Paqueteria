@@ -94,6 +94,17 @@ CREATE TABLE shipment_history (
 
 ## Servidor Node para BD
 
+### Instalar dependencias para el server
+primero, crear una carpeta (en cualquier ubicacion) para instalar el servidor express js.
+
+una vez creada la carpeta, (por ejemplo 'paqueteria_backend/'), ejecutar los siguientes comandos:
+```bash
+npm init -y
+npm install express mysql2 bcryptjs jsonwebtoken cors body-parser
+```
+
+Despues, en la carpeta del backend crear el archivo `index.js`, y pegar el siguiente codigo:
+
 ```js
 const express = require('express');
 const mysql = require('mysql2');
@@ -132,7 +143,7 @@ app.post('/register', async (req, res) => {
 // Ruta de login
 app.post('/login', (req, res) => {
   const { email, password, rememberMe } = req.body;
-
+  
   db.query(
     'SELECT * FROM users WHERE email = ?',
     [email],
@@ -184,4 +195,9 @@ app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
 
+```
+### Encender Servidor Express js
+Una vez hecho los pasos anteriores, encender el servidor con:
+```bash
+node ./index.js
 ```
