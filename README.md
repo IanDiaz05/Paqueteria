@@ -6,11 +6,10 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ```
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  email VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  fname VARCHAR(100) NOT NULL,
-  lname VARCHAR(100) NOT NULL,
-  phone VARCHAR(20),
+  fname VARCHAR(255),
+  lname VARCHAR(255),
   role ENUM('customer', 'admin', 'delivery') DEFAULT 'customer',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
