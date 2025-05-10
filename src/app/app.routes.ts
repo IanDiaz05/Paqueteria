@@ -13,6 +13,7 @@ import { roleGuard } from './guards/role.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 import { HelpComponent } from './pages/help/help.component';
+import { EnviosComponent } from './pages/envios/envios.component';
 
 export const routes: Routes = [
 
@@ -69,7 +70,8 @@ export const routes: Routes = [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
             { path: 'home', component: HomeComponent},
-            { path: 'acerca-de', component: HelpComponent}
+            { path: 'acerca-de', component: HelpComponent},
+            { path: 'envios', component: EnviosComponent}
         ],
     },
 
