@@ -24,6 +24,8 @@ export class EmployeesTableComponent {
   confirmPassword: string = '';
 
   employees: any[] = [];
+  editingEmployee: any = null;
+
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
@@ -72,15 +74,22 @@ export class EmployeesTableComponent {
     });
   }
 
-  onUpdateEmp(employee: any): void {
+  setEditingEmployee(employee: any): void {
+    this.editingEmployee = { ...employee };
+    console.log('Empleado en edición:', this.editingEmployee);
+  }
+
+  onUpdateEmp(): void {
+    if (!this.editingEmployee) return;
+  
     const updatedEmployee = {
-      fname: employee.fname,
-      lname: employee.lname,
-      email: employee.email,
-      role: employee.role
+      fname: this.editingEmployee.fname,
+      lname: this.editingEmployee.lname,
+      email: this.editingEmployee.email,
+      role: this.editingEmployee.role
     };
   
-    this.usersService.updateEmployee(employee.id, updatedEmployee).subscribe({
+    this.usersService.updateEmployee(this.editingEmployee.id, updatedEmployee).subscribe({
       next: (response) => {
         console.log('Empleado actualizado:', response);
         this.messageService.add({
@@ -90,6 +99,7 @@ export class EmployeesTableComponent {
           life: 3000
         });
         this.loadEmployees();
+        this.editingEmployee = null;
       },
       error: (error) => {
         console.error('Error al actualizar empleado:', error);
