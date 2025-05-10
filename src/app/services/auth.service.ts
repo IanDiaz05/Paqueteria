@@ -22,9 +22,4 @@ export class AuthService {
     sessionStorage.clear();
   }
 
-  getDashboard() {
-    return this.http.get(`${this.apiUrl}/dashboard`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
-  }
 }

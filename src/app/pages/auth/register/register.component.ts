@@ -3,12 +3,13 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
 })
 export class RegisterComponent {
   firstName: string = '';
@@ -20,7 +21,11 @@ export class RegisterComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   onSubmit() {
     if (this.password !== this.confirmPassword) {
@@ -40,6 +45,12 @@ export class RegisterComponent {
       next: (response: any) => {
         this.isLoading = false;
         if (response && response.message === 'Usuario registrado correctamente') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Feliciadades, ' + this.firstName,
+            detail: 'Te has registrado correctamente',
+            life: 3000
+          });
           this.router.navigateByUrl('/login');
         } else {
           this.errorMessage = 'Error inesperado al registrar el usuario.';

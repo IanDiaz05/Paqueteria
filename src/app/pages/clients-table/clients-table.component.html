@@ -1,1 +1,44 @@
 <p>clients-table works!</p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tabla de Clientes</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Acciones</th>
+                      </tr>
+                </tfoot>
+                <tbody>
+                    @for (client of clients; track client.id) {
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.fname }} {{ client.lname }}</td>
+                            <td>{{ client.email }}</td>
+                            <td>
+                              <!-- Puedes agregar botones para editar/eliminar -->
+                              <button>Editar</button>
+                              <button>Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

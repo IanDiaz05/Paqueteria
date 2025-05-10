@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent {
   errorMessage: string = '';
   isLoading: boolean = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
   onSubmit() {
     this.isLoading = true;
@@ -44,6 +49,11 @@ export class LoginComponent {
         }
   
         console.log('Inicio de sesión exitoso:', response.message);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Bienvenid@ de nuevo, ' + response.name,
+          life: 3000
+        });
         this.router.navigateByUrl('/dashboard');
       },
       error: (error) => {

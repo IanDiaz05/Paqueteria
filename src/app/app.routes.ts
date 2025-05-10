@@ -38,7 +38,7 @@ export const routes: Routes = [
             resolve: {
             title: () => {
                 const pageTitleService = inject(PageTitleService);
-                pageTitleService.setTitle('Nuestros Clientes');
+                pageTitleService.setTitle('Clientes');
                 return true;
             }
         }}

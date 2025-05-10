@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { PageTitleService } from '../../services/page-title.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-topbar',
@@ -21,7 +22,8 @@ export class TopbarComponent {
     private authService: AuthService,
     private pageTitleService: PageTitleService,
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,11 @@ export class TopbarComponent {
   }
 
   logout(): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Hasta luego, ' + this.userName,
+      life: 3000
+    });
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
