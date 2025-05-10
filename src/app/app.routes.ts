@@ -12,6 +12,7 @@ import { sessionGuard } from './guards/session.guard';
 import { roleGuard } from './guards/role.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
+import { HelpComponent } from './pages/help/help.component';
 
 export const routes: Routes = [
 
@@ -67,7 +68,8 @@ export const routes: Routes = [
         children: [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
-            { path: 'home', component: HomeComponent}
+            { path: 'home', component: HomeComponent},
+            { path: 'acerca-de', component: HelpComponent}
         ],
     },
 

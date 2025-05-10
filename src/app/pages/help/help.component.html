@@ -1,0 +1,173 @@
+<!-- Navbar (se mantiene igual) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
+    <div class="container">
+        <a class="navbar-brand" [routerLink]="['/']">
+            <img src="estafota_logo.png" alt="Estafota Logo" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/']">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" [routerLink]="['/terminos']">Términos y Condiciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/acerca-de']">Acerca de Nosotros</a>
+                </li>
+                <!-- Menú de usuario se mantiene -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section modificada -->
+<section class="bg-dark text-white py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center; background-size: cover;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h1 class="display-4 fw-bold mb-4">Términos y Condiciones</h1>
+                <p class="lead mb-5">Conoce los términos que rigen nuestro servicio</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contenido de Términos -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-5">
+                    <div class="card-body p-4 p-lg-5">
+                        <h2 class="fw-bold mb-4">1. Aceptación de los Términos</h2>
+                        <p class="mb-4">Al utilizar nuestros servicios de paquetería, usted acepta cumplir con estos términos y condiciones en su totalidad. Si no está de acuerdo con alguna parte de estos términos, no debe utilizar nuestros servicios.</p>
+                        
+                        <h2 class="fw-bold mb-4">2. Servicios Ofrecidos</h2>
+                        <p class="mb-4">Estafota ofrece servicios de transporte de paquetería a nivel nacional e internacional, incluyendo pero no limitado a:</p>
+                        <ul class="mb-4">
+                            <li>Envíos estándar</li>
+                            <li>Envíos express</li>
+                            <li>Servicios de mensajería</li>
+                            <li>Servicios logísticos especializados</li>
+                        </ul>
+                        
+                        <h2 class="fw-bold mb-4">3. Restricciones</h2>
+                        <p class="mb-4">Queda estrictamente prohibido el envío de los siguientes artículos:</p>
+                        <ul class="mb-4">
+                            <li>Sustancias ilegales o prohibidas</li>
+                            <li>Armas de cualquier tipo</li>
+                            <li>Material peligroso o inflamable</li>
+                            <li>Artículos perecederos sin empaque especial</li>
+                        </ul>
+                        
+                        <h2 class="fw-bold mb-4">4. Responsabilidades</h2>
+                        <p class="mb-4">4.1 El cliente es responsable de:</p>
+                        <ul class="mb-4">
+                            <li>Proporcionar información completa y veraz</li>
+                            <li>Empacar adecuadamente los artículos</li>
+                            <li>Declarar correctamente el contenido</li>
+                        </ul>
+                        
+                        <p class="mb-4">4.2 Estafota se responsabiliza por:</p>
+                        <ul class="mb-4">
+                            <li>Transporte seguro de los paquetes</li>
+                            <li>Entrega en el plazo estimado</li>
+                            <li>Manejo profesional de los envíos</li>
+                        </ul>
+                        
+                        <h2 class="fw-bold mb-4">5. Política de Reembolsos</h2>
+                        <p class="mb-4">En caso de pérdida o daño comprobado del paquete, Estafota reembolsará hasta 10 veces el valor del flete pagado, siempre que:</p>
+                        <ul class="mb-4">
+                            <li>Se haya declarado correctamente el contenido</li>
+                            <li>El daño no sea por empaque inadecuado</li>
+                            <li>Se presente reclamo dentro de los 15 días hábiles</li>
+                        </ul>
+                        
+                        <h2 class="fw-bold mb-4">6. Modificaciones</h2>
+                        <p class="mb-4">Nos reservamos el derecho de modificar estos términos en cualquier momento. Las versiones actualizadas se publicarán en nuestro sitio web.</p>
+                        
+                        <h2 class="fw-bold mb-4">7. Jurisdicción</h2>
+                        <p>Cualquier disputa relacionada con estos términos se resolverá en los tribunales competentes de la Ciudad de México, México.</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h3 class="h5"><i class="bi bi-info-circle me-2"></i> ¿Necesitas ayuda?</h3>
+                    <p class="mb-0">Si tienes dudas sobre estos términos, contáctanos a <a href="mailto:legal@estafota.com.mx">legal&#64;estafota.com.mx</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección "Acerca de Nosotros" -->
+<section id="acerca-de" class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Equipo Estafota" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Acerca de Estafota</h2>
+                <p class="mb-4">Fundada en 2010, Estafota se ha consolidado como una de las empresas líderes en servicios logísticos y de paquetería en México, con presencia en más de 1,500 ciudades a nivel nacional.</p>
+                
+                <h3 class="h5 mb-3">Nuestra Misión</h3>
+                <p class="mb-4">Proporcionar soluciones logísticas innovadoras que conecten personas y negocios a través de un servicio confiable, eficiente y con tecnología de punta.</p>
+                
+                <h3 class="h5 mb-3">Nuestra Visión</h3>
+                <p class="mb-4">Ser reconocidos como la empresa de paquetería preferida en México por nuestra excelencia operativa y compromiso con el cliente.</p>
+                
+                <h3 class="h5 mb-3">Valores Corporativos</h3>
+                <ul class="mb-4">
+                    <li><strong>Integridad:</strong> Actuamos con honestidad y transparencia</li>
+                    <li><strong>Innovación:</strong> Buscamos constantemente mejorar nuestros servicios</li>
+                    <li><strong>Responsabilidad:</strong> Cumplimos lo que prometemos</li>
+                    <li><strong>Excelencia:</strong> Superamos las expectativas de nuestros clientes</li>
+                </ul>
+                
+                <a [routerLink]="['/contacto']" class="btn btn-danger">Contáctanos</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer (se mantiene igual) -->
+<footer id="contacto" class="py-5 bg-black text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h5 class="text-uppercase mb-4">ESTAFOTA</h5>
+                <p>Líderes en soluciones logísticas y servicios de paquetería en México desde 2010.</p>
+                <div class="mt-4">
+                    <a href="#" class="text-white me-3" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white me-3" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white me-3" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4 mb-lg-0">
+                <h5 class="text-uppercase mb-4">Contacto</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Av. Insurgentes Sur 123, CDMX</li>
+                    <li class="mb-2"><i class="bi bi-telephone me-2"></i> (55) 1234 5678</li>
+                    <li class="mb-2"><i class="bi bi-envelope me-2"></i> contacto&#64;estafota.com.mx</li>
+                    <li><i class="bi bi-clock me-2"></i> Lunes a Viernes: 8:00 - 20:00</li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="text-uppercase mb-4">Enlaces rápidos</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a [routerLink]="['/acerca-de']" class="text-white text-decoration-none">Términos y condiciones</a></li> 
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4 bg-light">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 Estafota. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</footer>
