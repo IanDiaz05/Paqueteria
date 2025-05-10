@@ -16,7 +16,7 @@ export class AuthService {
 
   // registrar admnin o delivery
   registerAdmin(user: { email: string, password: string, firstName: string, lastName: string, role: string }) {
-    return this.http.post(`${this.apiUrl}/registerAdmin`, user);
+    return this.http.post(`${this.apiUrl}/registerEmployee`, user);
   }
 
   login(user: { email: string, password: string, rememberMe: boolean }) {
