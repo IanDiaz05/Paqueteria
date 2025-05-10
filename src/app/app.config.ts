@@ -5,9 +5,8 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 
 import {providePrimeNG} from 'primeng/config';
-import Aura from '@primeng/themes/aura';
-import {provideAnimations} from '@angular/platform-browser/animations'
-import { MessageService } from 'primeng/api';
+import Aura from '@primeng/themes/aura'
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,10 +15,13 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     providePrimeNG({
       theme: {
-        preset: Aura
-      }
+        preset: Aura,
+        options: {
+          darkModeSelector: false || 'none'
+        }
+      },
     }),
-    provideAnimations(),
+    provideAnimationsAsync(),
     MessageService
   ]
 };

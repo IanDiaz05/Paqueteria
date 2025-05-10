@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ClienteTableService } from '../../services/cliente-table.service';
 
+import { TableModule } from 'primeng/table';
+
 @Component({
   selector: 'app-clients-table',
-  imports: [],
+  imports: [TableModule],
   templateUrl: './clients-table.component.html',
   styleUrl: './clients-table.component.css',
 })
