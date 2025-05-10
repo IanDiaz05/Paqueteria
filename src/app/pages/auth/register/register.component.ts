@@ -32,7 +32,6 @@ export class RegisterComponent {
       this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
-  
     this.isLoading = true;
     this.errorMessage = '';
   

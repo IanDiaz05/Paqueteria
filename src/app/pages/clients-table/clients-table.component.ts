@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteTableService } from '../../services/cliente-table.service';
 import { TableModule } from 'primeng/table';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable'; // Importa el plugin
+import { UsersService } from '../../services/users.service';
 
 
 @Component({
@@ -16,11 +16,11 @@ export class ClientsTableComponent implements OnInit {
   clients: any[] = [];
 
   constructor(
-    private clientService: ClienteTableService,
+    private usersService: UsersService,
   ) {}
 
   ngOnInit() {
-    this.clientService.getClients().subscribe({
+    this.usersService.getClients().subscribe({
       next: (data) => this.clients = data,
       error: (err) => console.error('Error al obtener clientes', err)
     });

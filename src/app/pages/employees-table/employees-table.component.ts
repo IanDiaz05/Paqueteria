@@ -1,24 +1,74 @@
 import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ClienteTableService } from '../../services/cliente-table.service';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable'; // Importa el plugin
+import autoTable from 'jspdf-autotable';
+import { UsersService } from '../../services/users.service';
+import { PopoverModule } from 'primeng/popover';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-employees-table',
-  imports: [TableModule],
+  imports: [TableModule, PopoverModule, FormsModule],
   templateUrl: './employees-table.component.html',
   styleUrl: './employees-table.component.css'
 })
 export class EmployeesTableComponent {
+  firstName: string = '';
+  lastName: string = '';
+  role: string = '';
+  email: string = '';
+  password: string = '';
+  confirmPassword: string = '';
+
   employees: any[] = [];
-  constructor(private clientService: ClienteTableService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
-    this.clientService.getEmployees().subscribe({
+    this.loadEmployees();
+  }
+
+  loadEmployees(): void {
+    this.usersService.getEmployees().subscribe({
       next: (data) => this.employees = data,
-      error: (err) => console.error('Error al obtener clientes', err)
+      error: (err) => console.error('Error al obtener empleados', err)
+    });
+  }
+
+  onRegisterEmployee() {
+    const newEmployee = {
+      email: this.email,
+      password: this.password,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      role: this.role
+    };
+  
+    this.authService.registerAdmin(newEmployee).subscribe({
+      next: (response) => {
+        console.log('Usuario registrado:', response);
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Registro exitoso',
+          detail: this.role + ' registrado correctamente',
+          life: 3000
+        })
+        this.loadEmployees();
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error,
+          life: 3000
+        })
+      }
     });
   }
 

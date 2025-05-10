@@ -9,8 +9,14 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // registrar cliente
   register(user: { email: string, password: string, firstName: string, lastName: string }) {
     return this.http.post(`${this.apiUrl}/register`, user);
+  }
+
+  // registrar admnin o delivery
+  registerAdmin(user: { email: string, password: string, firstName: string, lastName: string, role: string }) {
+    return this.http.post(`${this.apiUrl}/registerAdmin`, user);
   }
 
   login(user: { email: string, password: string, rememberMe: boolean }) {
