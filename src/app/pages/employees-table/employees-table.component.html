@@ -1,6 +1,6 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-2 font-weight-bold text-primary lead">Tabla de Clientes</h6>
+        <h6 class="m-2 font-weight-bold text-primary lead">Tabla de Administradores y Repartidores</h6>
         <div>
             <button class="btn btn-success btn-icon-split btn-sm mr-2" (click)="exportToExcel()">
                 <span class="icon text-white-50">
@@ -19,30 +19,34 @@
     <div class="card-body">
         <div class="table-responsive mb-5">
             <p-table 
-            [value]="clients" 
+            [value]="employees" 
             [paginator]="true" 
             [rows]="10" 
             [rowsPerPageOptions]="[5, 10, 20]" 
             [responsiveLayout]="'scroll'" 
             [tableStyle]="{ 'min-width': '50rem' }"
+            [customSort]="true"
+            stripedRows
         >
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
                     <th pSortableColumn="fname">Nombre <p-sortIcon field="fname"></p-sortIcon></th>
                     <th pSortableColumn="email">Correo <p-sortIcon field="email"></p-sortIcon></th>
+                    <th pSortableColumn="role">Rol <p-sortIcon field="role"></p-sortIcon></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-client>
+            <ng-template pTemplate="body" let-employee>
                 <tr>
-                    <td>{{ client.id }}</td>
-                    <td>{{ client.fname }} {{ client.lname }}</td>
-                    <td>{{ client.email }}</td>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.fname }} {{ employee.lname }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.role }}</td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="footer">
                 <tr>
-                    <td colspan="4">Total de Clientes: {{ clients.length }}</td>
+                    <td colspan="4">Total de Empleados: {{ employees.length }}</td>
                 </tr>
             </ng-template>
         </p-table>

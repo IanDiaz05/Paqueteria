@@ -11,6 +11,7 @@ import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.compone
 import { sessionGuard } from './guards/session.guard';
 import { roleGuard } from './guards/role.guard';
 import { HomeComponent } from './pages/home/home.component';
+import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 
 export const routes: Routes = [
 
@@ -30,7 +31,8 @@ export const routes: Routes = [
                 pageTitleService.setTitle('Dashboard');
                 return true;
             }
-        } },
+            }
+        },
         {   path: 'clientes',
             component: ClientsTableComponent,
             canActivate: [roleGuard],
@@ -41,7 +43,20 @@ export const routes: Routes = [
                 pageTitleService.setTitle('Clientes');
                 return true;
             }
-        }}
+            }
+        },
+        {   path: 'empleados',
+            component: EmployeesTableComponent,
+            canActivate: [roleGuard],
+            data: { expectedRole: 'admin' },
+            resolve: {
+            title: () => {
+                const pageTitleService = inject(PageTitleService);
+                pageTitleService.setTitle('Colaboradores');
+                return true;
+            }
+            }
+        },
         // otras rutas internas
         ],
     },

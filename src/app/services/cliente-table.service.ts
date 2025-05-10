@@ -12,4 +12,8 @@ export class ClienteTableService {
     return this.http.get<any[]>(`${this.apiUrl}/clients`);
   }
 
+  getEmployees() {
+    return this.http.get<any[]>(`${this.apiUrl}/employees`);
+  }
+
 }
