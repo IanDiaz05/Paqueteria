@@ -10,10 +10,11 @@ import { ClientsTableComponent } from './pages/clients-table/clients-table.compo
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { sessionGuard } from './guards/session.guard';
 import { roleGuard } from './guards/role.guard';
-import { HomeComponent } from './pages/home/home.component';
 import { EmployeesTableComponent } from './pages/employees-table/employees-table.component';
 import { HelpComponent } from './pages/help/help.component';
 import { EnviosComponent } from './pages/envios/envios.component';
+import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
 
@@ -69,10 +70,17 @@ export const routes: Routes = [
         children: [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
-            { path: 'home', component: HomeComponent},
             { path: 'acerca-de', component: HelpComponent},
             { path: 'envios', component: EnviosComponent}
         ],
+    },
+
+    {
+        path: '',
+        component: HomeLayoutComponent,
+        children: [
+            { path: 'home', component: HomeComponent}
+        ]
     },
 
     { path: '**', redirectTo: 'home' } // Redirige a login si la ruta no existe

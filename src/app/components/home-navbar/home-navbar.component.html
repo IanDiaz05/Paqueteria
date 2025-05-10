@@ -1,0 +1,50 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
+    <div class="container">
+        <a class="navbar-brand" [routerLink]="['/']">
+            <img src="estafota_logo.png" alt="Estafota Logo" height="40">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" [routerLink]="['/']">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#servicios">Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#rastreo">Rastreo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contacto">Contacto</a>
+                </li>
+                <!-- Tu nuevo menú de usuario -->
+                <li class="nav-item">
+                    <div class="dropdown no-arrow">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline small"><strong class="h6">{{ userName }}</strong></span>
+                            <i class="bi bi-person-circle lead"></i>
+                        </button>
+                        <ul class="dropdown-menu shadow-lg animated--grow-in">
+                            <li>
+                                <a class="dropdown-item text-secondary" [routerLink]="['/profile']">
+                                    <i class="bi bi-person-lines-fill mr-2"></i>
+                                    Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <button class="dropdown-item text-secondary" (click)="logout()">
+                                    <i class="bi bi-door-open"></i>
+                                    Cerrar sesión
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

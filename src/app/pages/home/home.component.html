@@ -1,54 +1,3 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
-    <div class="container">
-        <a class="navbar-brand" [routerLink]="['/']">
-            <img src="estafota_logo.png" alt="Estafota Logo" height="40">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" [routerLink]="['/']">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#servicios">Servicios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#rastreo">Rastreo</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contacto">Contacto</a>
-                </li>
-                <!-- Tu nuevo menú de usuario -->
-                <li class="nav-item">
-                    <div class="dropdown no-arrow">
-                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline small"><strong class="h6">{{ userName }}</strong></span>
-                            <i class="bi bi-person-circle lead"></i>
-                        </button>
-                        <ul class="dropdown-menu shadow-lg animated--grow-in">
-                            <li>
-                                <a class="dropdown-item text-secondary" [routerLink]="['/profile']">
-                                    <i class="bi bi-person-lines-fill mr-2"></i>
-                                    Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <button class="dropdown-item text-secondary" (click)="logout()">
-                                    <i class="bi bi-door-open"></i>
-                                    Cerrar sesión
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
 <!-- Hero Section -->
 <section class="bg-dark text-white py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://www.modaes.com/files/000_2016/0109recursos/online-paquetes-728.jpg') no-repeat center center; background-size: cover;">
     <div class="container py-5">
@@ -80,8 +29,8 @@
 <section id="servicios" class="py-5">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Nuestros Servicios</h2>
-            <p class="lead text-muted">Soluciones logísticas adaptadas a tus necesidades</p>
+            <h2 class="text-light fw-bold">Nuestros Servicios</h2>
+            <p class="lead text-gray-100">Soluciones logísticas adaptadas a tus necesidades</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
@@ -128,11 +77,11 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-av09mz-CwQyKD7Wk9dJSxxWQ3K8QVTfmKQ&s" alt="Equipo Estafota" class="img-fluid rounded shadow">
+            <div class="col-lg-6">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-av09mz-CwQyKD7Wk9dJSxxWQ3K8QVTfmKQ&s" alt="Equipo Estafota" class="img-fluid rounded shadow w-100">
             </div>
             <div class="col-lg-6">
-                <h2 class="fw-bold mb-4">¿Por qué elegir Estafota?</h2>
+                <h2 class="text-danger fw-bold mb-4">¿Por qué elegir Estafota?</h2>
                 <div class="d-flex mb-3">
                     <div class="me-4 text-danger">
                         <i class="bi bi-check-circle-fill" style="font-size: 1.5rem;" aria-hidden="true"></i>
@@ -165,40 +114,3 @@
         </div>
     </div>
 </section>
-
-<!-- Footer -->
-<footer id="contacto" class="py-5 bg-black text-white">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h5 class="text-uppercase mb-4">ESTAFOTA</h5>
-                <p>Líderes en soluciones logísticas y servicios de paquetería en México desde 2010.</p>
-                <div class="mt-4">
-                    <a href="#" class="text-white me-3" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white me-3" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="text-white me-3" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <h5 class="text-uppercase mb-4">Contacto</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Av. Insurgentes Sur 123, CDMX</li>
-                    <li class="mb-2"><i class="bi bi-telephone me-2"></i> (55) 1234 5678</li>
-                    <li class="mb-2"><i class="bi bi-envelope me-2"></i> contacto&#64;estafota.com.mx</li>
-                    <li><i class="bi bi-clock me-2"></i> Lunes a Viernes: 8:00 - 20:00</li>
-                </ul>
-            </div>
-            <div class="col-lg-4">
-                <h5 class="text-uppercase mb-4">Enlaces rápidos</h5>
-                <ul class="list-unstyled">
-                    <li class="mb-2"><a [routerLink]="['/acerca-de']" class="text-white text-decoration-none">Términos y condiciones</a></li> 
-                </ul>
-            </div>
-        </div>
-        <hr class="my-4 bg-light">
-        <div class="text-center">
-            <p class="mb-0">&copy; 2025 Estafota. Todos los derechos reservados.</p>
-        </div>
-    </div>
-</footer>
