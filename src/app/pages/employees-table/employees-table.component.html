@@ -3,48 +3,48 @@
         <h6 class="m-2 font-weight-bold text-primary lead">Tabla de Administradores y Repartidores</h6>
         <div class="d-flex justify-content-between align-items-center">
             <div>
-            <button class="btn btn-success btn-icon-split btn-sm mr-2" (click)="exportToExcel()">
-                <span class="icon text-white-50">
-                <i class="bi bi-file-earmark-spreadsheet"></i>
-                </span>
-                <span class="text">Excel</span>
-            </button>
-            <button class="btn btn-danger btn-icon-split btn-sm" (click)="exportToPDF()">
-                <span class="icon text-white-50">
-                <i class="bi bi-file-earmark-pdf"></i>
-                </span>
-                <span class="text">PDF</span>
-            </button>
+                <button class="btn btn-success btn-icon-split btn-sm mr-2" (click)="exportToExcel()">
+                    <span class="icon text-white-50">
+                    <i class="bi bi-file-earmark-spreadsheet"></i>
+                    </span>
+                    <span class="text">Excel</span>
+                </button>
+                <button class="btn btn-danger btn-icon-split btn-sm" (click)="exportToPDF()">
+                    <span class="icon text-white-50">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    </span>
+                    <span class="text">PDF</span>
+                </button>
             </div>
             <div>
-            <button class="btn btn-primary btn-icon-split btn-sm" (click)="op.toggle($event)">
-                <span class="icon text-white-50">
-                <i class="bi bi-person-plus"></i>
-                </span>
-                <span class="text">Crear Empleado</span>
-            </button>
+                <button class="btn btn-primary btn-icon-split" (click)="op.toggle($event)">
+                    <span class="icon text-white-50">
+                    <i class="bi bi-person-plus"></i>
+                    </span>
+                    <span class="text">Crear Empleado</span>
+                </button>
             </div>
         </div>
     </div>
     <div class="card-body">
         <div class="table-responsive mb-5">
             <p-table 
-            [value]="employees" 
-            [paginator]="true" 
-            [rows]="10" 
-            [rowsPerPageOptions]="[5, 10, 20]" 
-            [responsiveLayout]="'scroll'" 
-            [tableStyle]="{ 'min-width': '50rem' }"
-            [customSort]="true"
-            stripedRows
-        >
+                [value]="employees" 
+                [paginator]="true" 
+                [rows]="10" 
+                [rowsPerPageOptions]="[5, 10, 20]" 
+                [responsiveLayout]="'scroll'" 
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [customSort]="true"
+                stripedRows
+            >
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
                     <th pSortableColumn="fname">Nombre <p-sortIcon field="fname"></p-sortIcon></th>
                     <th pSortableColumn="email">Correo <p-sortIcon field="email"></p-sortIcon></th>
                     <th pSortableColumn="role">Rol <p-sortIcon field="role"></p-sortIcon></th>
-                    <th>Acciones</th>
+                    <th style="width: 20%;">Acciones</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-employee>
@@ -54,24 +54,42 @@
                     <td>{{ employee.email }}</td>
                     <td>{{ employee.role }}</td>
                     <td>
-                        <button class="btn btn-warning btn-icon-split btn-sm"> 
+                        <button class="btn btn-warning btn-icon-split btn-sm mr-2"> 
                             <span class="icon text-white-50">
                                 <i class="bi bi-pencil-square"></i>
                             </span>
                             <span class="text">Editar</span>
                         </button>
-                        <button class="btn btn-danger btn-icon-split btn-sm">
+                        <button class="btn btn-danger btn-icon-split btn-sm" (click)="del.toggle($event)">
                             <span class="icon text-white-50">
                                 <i class="bi bi-trash"></i>
                             </span>
                             <span class="text">Eliminar</span>
                         </button>
+
+                        <!-- popover confirmar delete -->
+                        <p-popover #del [style]="{width: '13rem'}" class="text-center">
+                            <div class="flex flex-col gap-4 w-[25rem]">
+                                <span class="font-weight-bold text-danger lead block mb-2">¿Estás seguro?</span>
+                            </div>
+                            <div class="flex flex-col gap-4 w-[25rem]">
+                                <span class="text-secondary">Se eliminará a <strong>{{ employee.fname }} {{ employee.lname }}</strong></span>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger btn-icon-split btn-sm" (click)="onDeleteEmp(employee.id)">
+                                    <span class="icon text-white-50">
+                                        <i class="bi bi-trash"></i>
+                                    </span>
+                                    <span class="text">Eliminar</span>
+                                </button>
+                            </div>
+                        </p-popover>
                     </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="footer">
                 <tr>
-                    <td colspan="4">Total de Empleados: {{ employees.length }}</td>
+                    <td colspan="5">Total de Empleados: {{ employees.length }}</td>
                 </tr>
             </ng-template>
         </p-table>

@@ -156,7 +156,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Conexión a MySQL (configura con tus datos de XAMPP)
+// Conexión a MySQL
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -164,7 +164,9 @@ const db = mysql.createConnection({
   database: 'paqueteria'
 });
 
-// Ruta de registro
+// ######### LOGIN Y REGISTRO
+
+// registro clientes
 app.post('/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -188,21 +190,17 @@ app.post('/login', (req, res) => {
     [email],
     async (err, results) => {
       if (err) {
-        console.error('Error en la base de datos:', err);
         return res.status(500).json({ message: 'Error en el servidor' });
       }
 
       if (results.length === 0) {
-        console.warn('Usuario no encontrado:', email);
         return res.status(400).json({ message: 'Usuario no encontrado' });
       }
 
       const user = results[0];
-      console.log('User:', user); // Verifica el rol del usuario
-
       const validPassword = await bcrypt.compare(password, user.password);
+      
       if (!validPassword) {
-        console.warn('Contraseña incorrecta para el usuario:', email);
         return res.status(400).json({ message: 'Contraseña incorrecta' });
       }
 
@@ -212,27 +210,96 @@ app.post('/login', (req, res) => {
         'secreto',
         rememberMe ? {} : { expiresIn: '1h' }
       );      
-
-      console.log('Inicio de sesión exitoso para el usuario:', email);  
       res.json({ token, name: user.fname, role: user.role, message: 'Inicio de sesión exitoso' });
     }
   );
 });
 
-// Ruta protegida (ejemplo para dashboard)
-app.get('/dashboard', (req, res) => {
-  const token = req.headers['authorization'];
-  if (!token) return res.status(401).send('Acceso denegado');
-  
-  try {
-    const verified = jwt.verify(token, 'secreto');
-    if (verified.role !== 'admin') {
-      return res.status(403).send('Acceso denegado: No tienes permisos suficientes');
-    }
-    res.json({ message: `Bienvenido al dashboard, usuario ${verified.id}` });
-  } catch (err) {
-    res.status(400).send('Token inválido');
+// ######### TABLA CLIENTES
+
+// Obtener clientes
+app.get('/clients', (req, res) => {
+  db.query('SELECT id, email, fname, lname FROM users WHERE role="customer"', (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error al obtener clientes' });
+    res.json(results);
+  });
+});
+
+// ######### TABLA DE EMPLEADOS
+// obtener empleados
+app.get('/employees', (req, res) => {
+  db.query('SELECT id, email, fname, lname, role FROM users WHERE role IN ("admin", "delivery")', (err, results) => {
+    if (err) return res.status(500).json({ message: 'Error al obtener los empleados' });
+    res.json(results);
+  });
+});
+
+// registrar empleado
+app.post('/registerEmployee', async (req, res) => {
+  const { email, password, firstName, lastName, role } = req.body;
+
+  // Validar que el rol sea válido
+  if (!['admin', 'delivery'].includes(role)) {
+    return res.status(400).json({ message: 'Rol inválido. Solo se permiten "admin" o "delivery".' });
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  db.query(
+    'INSERT INTO users (email, password, fname, lname, role) VALUES (?, ?, ?, ?, ?)',
+    [email, hashedPassword, firstName, lastName, role],
+    (err, result) => {
+      if (err) {
+        console.error('Error al registrar usuario:', err);
+        return res.status(500).json({ message: 'Error al registrar usuario' });
+      }
+      res.status(201).json({ message: 'Empleado registrado correctamente' });
+    }
+  );
+});
+
+// Editar un empleado
+app.put('/employees/:id', (req, res) => {
+  const { id } = req.params;
+  const { fname, lname, email, role } = req.body;
+
+  // Validar que el rol sea válido
+  if (!['admin', 'delivery'].includes(role)) {
+    return res.status(400).json({ message: 'Rol inválido. Solo se permiten "admin" o "delivery".' });
+  }
+
+  db.query(
+    'UPDATE users SET fname = ?, lname = ?, email = ?, role = ? WHERE id = ?',
+    [fname, lname, email, role, id],
+    (err, result) => {
+      if (err) {
+        console.error('Error al actualizar empleado:', err);
+        return res.status(500).json({ message: 'Error al actualizar empleado' });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Empleado no encontrado' });
+      }
+
+      res.status(200).json({ message: 'Empleado actualizado correctamente' });
+    }
+  );
+});
+
+// Eliminar un empleado
+app.delete('/employees/:id', (req, res) => {
+  const { id } = req.params;
+
+  db.query('DELETE FROM users WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar empleado:', err);
+      return res.status(500).json({ message: 'Error al eliminar empleado' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Empleado no encontrado' });
+    }
+
+    res.status(200).json({ message: 'Empleado eliminado correctamente' });
+  });
 });
 
 app.listen(3000, () => {

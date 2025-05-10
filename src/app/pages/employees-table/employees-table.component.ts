@@ -65,9 +65,63 @@ export class EmployeesTableComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error,
+          detail: error.error.message || 'Error al registrar empleado',
           life: 3000
         })
+      }
+    });
+  }
+
+  onUpdateEmp(employee: any): void {
+    const updatedEmployee = {
+      fname: employee.fname,
+      lname: employee.lname,
+      email: employee.email,
+      role: employee.role
+    };
+  
+    this.usersService.updateEmployee(employee.id, updatedEmployee).subscribe({
+      next: (response) => {
+        console.log('Empleado actualizado:', response);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Actualización exitosa',
+          detail: 'Empleado actualizado correctamente',
+          life: 3000
+        });
+        this.loadEmployees();
+      },
+      error: (error) => {
+        console.error('Error al actualizar empleado:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message || 'Error al actualizar empleado',
+          life: 3000
+        });
+      }
+    });
+  }
+
+  onDeleteEmp(employeeId: number): void {
+    this.usersService.deleteEmployee(employeeId).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Baja exitosa',
+          detail: 'Empleado eliminado correctamente',
+          life: 3000
+        });
+        this.loadEmployees();
+      },
+      error: (error) => {
+        console.error('Error al eliminar empleado:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message || 'Error al eliminar empleado',
+          life: 3000
+        });
       }
     });
   }

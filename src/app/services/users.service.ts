@@ -15,4 +15,12 @@ export class UsersService {
   getEmployees() {
     return this.http.get<any[]>(`${this.apiUrl}/employees`);
   }
+
+  updateEmployee(employeeId: number, updatedData: { fname: string; lname: string; email: string; role: string }) {
+    return this.http.put(`${this.apiUrl}/employees/${employeeId}`, updatedData);
+  }
+
+  deleteEmployee(employeeId: number) {
+    return this.http.delete(`${this.apiUrl}/employees/${employeeId}`);
+  }
 }
