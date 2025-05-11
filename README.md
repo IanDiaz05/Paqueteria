@@ -41,8 +41,10 @@ CREATE TABLE packages (
   size ENUM('S', 'M', 'L') DEFAULT 'M',
   declared_value DECIMAL(10,2),
   is_fragile BOOLEAN DEFAULT FALSE,
-  recipient_name VARCHAR(255) NOT NULL,
+  recipient_fname VARCHAR(100) NOT NULL,
+  recipient_lname VARCHAR(100),
   recipient_phone VARCHAR(20),
+  recipient_email VARCHAR(50),
   registered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   packaged_at DATETIME,
   dispatched_at DATETIME,
@@ -269,7 +271,6 @@ app.delete('/employees/:id', (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
-
 ```
 
 ### Encender Servidor Express js
