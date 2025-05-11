@@ -79,7 +79,7 @@ export const routes: Routes = [
         component: HomeLayoutComponent,
         children: [
             { path: 'home', component: HomeComponent},
-            { path: 'enviar', component: EnviosComponent, canActivate: [sessionGuard, roleGuard], data: {expectedRole: 'customer'}}
+            { path: 'enviar', component: EnviosComponent}
         ]
     },
 
