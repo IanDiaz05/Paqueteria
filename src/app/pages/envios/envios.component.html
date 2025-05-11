@@ -18,192 +18,143 @@
     }
 </style>
 
-    <!-- Formulario de Envío -->
-    <div class="container my-5 bg-gradient-light p-5 rounded shadow">
-        <h1 class="text-center mb-4"><i class="bi bi-box-seam me-2"></i>Nuevo Envío</h1>
-        
-        <form id="envioForm" action="procesar_envio.php" method="POST">
+<!-- Formulario de Envío -->
+<div class="container my-5 bg-gradient-light p-5 rounded shadow">
+    <h1 class="text-center mb-4"><i class="bi bi-box-seam me-2"></i>Nuevo Envío</h1>
+    
+    <form (ngSubmit)="onNewPackage()" #envioForm="ngForm">
 
-            <!-- Sección: Información del Destinatario -->
-            <div class="form-section">
-                <h3 class="form-title"><i class="bi bi-person-check me-2"></i>Datos del Destinatario</h3>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioNombre" class="form-label required-field">Nombre</label>
-                        <input type="text" class="form-control" id="destinatarioNombre" name="destinatario[nombre]" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioApellido" class="form-label required-field">Apellido</label>
-                        <input type="text" class="form-control" id="destinatarioApellido" name="destinatario[apellido]" required>
-                    </div>
-                    
+        <!-- Sección: Información del Destinatario -->
+        <div class="form-section">
+            <h3 class="form-title"><i class="bi bi-person-check me-2"></i>Datos del Destinatario</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="destinatarioNombre" class="form-label required-field">Nombre</label>
+                    <input type="text" class="form-control" id="destinatarioNombre" name="fname" [(ngModel)]="package.fname" required>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioEmail" class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="destinatarioEmail" name="destinatario[email]">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioTelefono" class="form-label required-field">Teléfono</label>
-                        <input type="tel" class="form-control" id="destinatarioTelefono" name="destinatario[telefono]" required>
-                    </div>
+                <div class="col-md-6 mb-3">
+                    <label for="destinatarioApellido" class="form-label required-field">Apellido</label>
+                    <input type="text" class="form-control" id="destinatarioApellido" name="lname" [(ngModel)]="package.lname" required>
                 </div>
             </div>
-
-            <!-- seccion direccion de entrega -->
-            <div class="form-section">
-                <h3 class="form-title"><i class="bi bi-house-door me-2"></i>Dirección de Entrega</h3>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioDireccion" class="form-label required-field">Dirección</label>
-                        <input type="text" class="form-control" id="destinatarioDireccion" name="destinatario[direccion]" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioCiudad" class="form-label required-field">Ciudad</label>
-                        <input type="text" class="form-control" id="destinatarioCiudad" name="destinatario[ciudad]" required>
-                    </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="destinatarioEmail" class="form-label required-field">Correo electrónico</label>
+                    <input type="email" class="form-control" id="destinatarioEmail" name="email" [(ngModel)]="package.email" required>
                 </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="destinatarioEstado" class="form-label required-field">Estado</label>
-                        <input type="text" class="form-control" id="destinatarioEstado" name="destinatario[estado]" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="destinatarioCodigoPostal" class="form-label required-field">Código Postal</label>
-                        <input type="text" class="form-control" id="destinatarioCodigoPostal" name="destinatario[codigo_postal]" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="destinatarioPais" class="form-label required-field">País</label>
-                        <input type="text" class="form-control" id="destinatarioPais" name="destinatario[pais]" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioReferencia" class="form-label">Referencia (opcional)</label>
-                        <input type="text" class="form-control" id="destinatarioReferencia" name="destinatario[referencia]">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="destinatarioInstrucciones" class="form-label">Instrucciones especiales</label>
-                        <textarea class="form-control" id="destinatarioInstrucciones" name="destinatario[instrucciones]" rows="1"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sección: Detalles del Paquete -->
-            <div class="form-section">
-                <h3 class="form-title"><i class="bi bi-box me-2"></i>Detalles del Paquete</h3>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="paqueteDescripcion" class="form-label required-field">Descripción del contenido</label>
-                        <input type="text" class="form-control" id="paqueteDescripcion" name="paquete[descripcion]" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="paquetePeso" class="form-label required-field">Peso (kg)</label>
-                        <input type="number" step="0.1" class="form-control" id="paquetePeso" name="paquete[peso]" min="0.1" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="paqueteTamano" class="form-label required-field">Tamaño</label>
-                        <select class="form-select" id="paqueteTamano" name="paquete[tamano]" required>
-                            <option value="" selected disabled>Seleccionar...</option>
-                            <option value="S">Pequeño (S)</option>
-                            <option value="M">Mediano (M)</option>
-                            <option value="L">Grande (L)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="paqueteValor" class="form-label">Valor declarado (opcional)</label>
-                        <input type="number" class="form-control" id="paqueteValor" name="paquete[valor]" min="0">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Características especiales</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="paqueteFragil" name="paquete[fragil]">
-                            <label class="form-check-label" for="paqueteFragil">Frágil</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="paqueteInstrucciones" class="form-label">Instrucciones especiales</label>
-                        <textarea class="form-control" id="paqueteInstrucciones" name="paquete[instrucciones]" rows="1"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sección: Servicio y Pago -->
-            <div class="form-section">
-                <h3 class="form-title"><i class="bi bi-lightning-charge me-2"></i>Servicio y Pago</h3>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="servicioTipo" class="form-label required-field">Tipo de servicio</label>
-                        <select class="form-select" id="servicioTipo" name="servicio[tipo]" required>
-                            <option value="" selected disabled>Seleccionar...</option>
-                            <option value="estandar">Estándar (3-5 días)</option>
-                            <option value="express">Express (24-48 hrs)</option>
-                            <option value="sameday">Mismo día</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="servicioFecha" class="form-label required-field">Fecha de recogida</label>
-                        <input type="date" class="form-control" id="servicioFecha" name="servicio[fecha]" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="terminosCondiciones" required>
-                            <label class="form-check-label" for="terminosCondiciones">Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#terminosModal">términos y condiciones</a></label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="reset" class="btn btn-outline-secondary me-md-2">
-                    <i class="bi bi-x-circle me-1"></i> Cancelar
-                </button>
-                <button type="submit" class="btn btn-danger">
-                    <i class="bi bi-check-circle me-1"></i> Solicitar Envío
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Modal Términos y Condiciones -->
-    <div class="modal fade" id="terminosModal" tabindex="-1" aria-labelledby="terminosModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="terminosModalLabel">Términos y Condiciones</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenido de términos y condiciones -->
-                    <p>Aquí van los términos y condiciones de uso del servicio de envíos...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <div class="col-md-6 mb-3">
+                    <label for="destinatarioTelefono" class="form-label required-field">Teléfono</label>
+                    <input type="tel" class="form-control" id="destinatarioTelefono" name="phone" [(ngModel)]="package.phone" required>
                 </div>
             </div>
         </div>
-    </div>
 
+        <!-- Sección: Dirección de Entrega -->
+        <div class="form-section">
+            <h3 class="form-title"><i class="bi bi-house-door me-2"></i>Dirección de Entrega</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="direccionCalle" class="form-label required-field">Calle</label>
+                    <input type="text" class="form-control" id="direccionCalle" name="street" [(ngModel)]="package.street" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="direccionCiudad" class="form-label required-field">Ciudad</label>
+                    <input type="text" class="form-control" id="direccionCiudad" name="city" [(ngModel)]="package.city" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="direccionEstado" class="form-label required-field">Estado</label>
+                    <input type="text" class="form-control" id="direccionEstado" name="state" [(ngModel)]="package.state" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="direccionCodigoPostal" class="form-label required-field">Código Postal</label>
+                    <input type="text" class="form-control" id="direccionCodigoPostal" name="zipcode" [(ngModel)]="package.zipcode" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="direccionPais" class="form-label required-field">País</label>
+                    <select class="form-select" id="direccionPais" name="country" [(ngModel)]="package.country" required>
+                        <option value="" selected disabled>Seleccionar...</option>
+                        <option value="USA">Estados Unidos</option>
+                        <option value="MEX">México</option>
+                        <option value="ESP">España</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="direccionReferencia" class="form-label">Referencia (opcional)</label>
+                    <input type="text" class="form-control" id="direccionReferencia" name="reference" [(ngModel)]="package.reference">
+                </div>
+            </div>
+        </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Validación del formulario -->
-    <script>
-        document.getElementById('envioForm').addEventListener('submit', function(event) {
-            // Validación adicional si es necesaria
-            if (!document.getElementById('terminosCondiciones').checked) {
-                alert('Debes aceptar los términos y condiciones');
-                event.preventDefault();
-            }
-            
-            // Aquí podrías agregar más validaciones o enviar los datos por AJAX
-        });
-        
-        // Establecer fecha mínima para el campo de fecha (hoy)
-        document.getElementById('servicioFecha').min = new Date().toISOString().split('T')[0];
-    </script>
+        <!-- Sección: Detalles del Paquete -->
+        <div class="form-section">
+            <h3 class="form-title"><i class="bi bi-box me-2"></i>Detalles del Paquete</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="paqueteDescripcion" class="form-label required-field">Descripción del paquete</label>
+                    <input type="text" class="form-control" id="paqueteDescripcion" name="description" [(ngModel)]="package.description" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="paquetePeso" class="form-label required-field">Peso (kg)</label>
+                    <input type="number" class="form-control" id="paquetePeso" name="weight" [(ngModel)]="package.weight" step="0.01" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="paqueteTamano" class="form-label required-field">Tamaño</label>
+                    <select class="form-select" id="paqueteTamano" name="size" [(ngModel)]="package.size" required>
+                        <option value="" selected disabled>Seleccionar...</option>
+                        <option value="S">Pequeño</option>
+                        <option value="M">Mediano</option>
+                        <option value="L">Grande</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="paqueteValorDeclarado" class="form-label required-field">Valor declarado ($)</label>
+                    <input type="number" class="form-control" id="paqueteValorDeclarado" name="declared_value" [(ngModel)]="package.declared_value" step="0.01" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="paqueteFragil" class="form-label">¿Es frágil?</label>
+                    <select class="form-select" id="paqueteFragil" name="is_fragile" [(ngModel)]="package.is_fragile">
+                        <option value="" selected disabled>Seleccionar...</option>
+                        <option [value]=1>Sí</option>
+                        <option [value]=0>No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label for="paqueteNotas" class="form-label">Notas de entrega (opcional)</label>
+                    <textarea class="form-control" id="paqueteNotas" name="delivery_notes" [(ngModel)]="package.delivery_notes" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="terminosCondiciones" name="terms_accepted" [(ngModel)]="terms_accepted" required>
+                <label class="form-check-label" for="terminosCondiciones">Acepto los <a (click)="showDialog()" class="btn-link m-0">términos y condiciones</a></label>
+            </div>
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-check-circle me-1"></i> Solicitar Envío
+            </button>
+        </div>
+    </form>
+</div>
+
+<p-dialog header="Términos y Condiciones" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <p> 
+        Al aceptar los términos y condiciones, usted acepta que la empresa no se hace responsable por daños o pérdidas que puedan ocurrir durante el envío. 
+        Se recomienda asegurar el paquete si contiene artículos de alto valor. 
+        La empresa se reserva el derecho de rechazar envíos que no cumplan con las políticas de seguridad y envío.
+        Para más información, consulte nuestra <a routerLink="/home" target="_blank">página de términos y condiciones</a>.
+    </p>
+    <p>
+        Al hacer clic en "Solicitar Envío", usted acepta que ha leído y entendido los términos y condiciones de nuestro servicio.
+        Si tiene alguna pregunta, no dude en contactarnos a través de nuestro servicio al cliente.
+        Gracias por elegir nuestro servicio de envío.
+    </p>
+</p-dialog>
