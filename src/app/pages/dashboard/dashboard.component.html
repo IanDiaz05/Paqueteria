@@ -1,62 +1,69 @@
-<!-- mini cards -->
-<div class="row">
+<div class="container-fluid py-4">
+  <h1 class="mb-4">Dashboard de Envíos</h1>
 
-    <!-- ganancias mensuales-->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <app-minicard
-            [title]="'Ganancias (Mes)'"
-            [content]="'$40,000'"
-            [borderColor]="'primary'"
-            [icon]="'bi bi-calendar-event-fill'">
-        </app-minicard>
+  <ng-container *ngIf="loading; else dashboardContent">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
     </div>
+  </ng-container>
 
-    <!-- paquetes en transito -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <app-minicard
-            [title]="'Paquetes en tránsito'"
-            [content]="'10'"
-            [borderColor]="'success'"
-            [icon]="'bi bi-truck'">
-        </app-minicard>
-    </div>
-
-    <!-- ganancias mensuales-->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <app-minicard
-            [title]="'Ganancias (Mes)'"
-            [content]="'$40,000'"
-            [borderColor]="'warning'"
-            [icon]="'bi bi-calendar-event-fill'">
-        </app-minicard>
-    </div>
-
-    <!-- ganancias mensuales-->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <app-minicard
-            [title]="'Ganancias (Mes)'"
-            [content]="'$40,000'"
-            [borderColor]="'danger'"
-            [icon]="'bi bi-calendar-event-fill'">
-        </app-minicard>
-    </div>
-
-</div>
-
-<!-- contenido -->
-<div class="row">
-    <!-- alert de bienvenida o descripcion del dashboard -->
-    <div class="col-xl-6 col-md-6 mb-4">
-        <!-- Basic Card Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
-            </div>
-            <div class="card-body">
-                The styling for this basic card example is created by using default Bootstrap
-                utility classes. By using utility classes, the style of the card component can be
-                easily modified with no need for any custom CSS!
-            </div>
+  <ng-template #dashboardContent>
+    <div class="row g-4">
+      <!-- Tarjetas de estadísticas -->
+      <div class="col-md-3">
+        <app-stat-card 
+          title="Envíos Totales" 
+          [value]="dashboardData?.totalShipments || 0" 
+          icon="bi-box-seam"
+          colorClass="bg-primary">
+        </app-stat-card>
+      </div>
+      <div class="col-md-3">
+        <app-stat-card 
+          title="Entregados" 
+          [value]="dashboardData?.delivered || 0" 
+          icon="bi-check-circle"
+          colorClass="bg-success">
+        </app-stat-card>
+      </div>
+      <!-- Tabla de envíos recientes -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Últimos Envíos</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Guía</th>
+                  <th>Destino</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let shipment of recentShipments; trackBy: trackByShipmentId">
+                  <td>{{shipment.tracking_number}}</td>
+                  <td>{{shipment.destination}}</td>
+                  <td>
+                    <span class="badge" [ngClass]="{
+                    'bg-success': shipment.status === 'entregado',
+                    'bg-warning': shipment.status === 'procesamiento',
+                    'bg-info': shipment.status === 'en tránsito',
+                    'bg-primary': shipment.status === 'en reparto',
+                    'bg-secondary': shipment.status === 'registrado'
+                    }">
+                    {{shipment.status}}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </ng-template>
 </div>

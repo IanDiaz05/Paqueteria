@@ -118,6 +118,7 @@ const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -268,9 +269,64 @@ app.delete('/employees/:id', (req, res) => {
   });
 });
 
+// 1. Estadísticas generales del dashboard
+app.get('/dashboard/stats', (req, res) =>  {
+  Promise.all([
+    db.promise().query('SELECT COUNT(*) as totalPackages FROM packages'),
+    db.promise().query('SELECT COUNT(*) as delivered FROM packages WHERE delivered_at IS NOT NULL'),
+    db.promise().query('SELECT COUNT(*) as inTransit FROM packages WHERE in_transit_at IS NOT NULL AND delivered_at IS NULL'),
+    db.promise().query('SELECT COUNT(*) as pending FROM packages WHERE dispatched_at IS NULL')
+  ])
+  .then(([total, delivered, inTransit, pending]) => {
+    res.json({
+      totalShipments: total[0][0].totalPackages,
+      delivered: delivered[0][0].delivered,
+      inTransit: inTransit[0][0].inTransit,
+      pending: pending[0][0].pending
+    });
+  })
+  .catch(err => {
+    console.error('Error en dashboard stats:', err);
+    res.status(500).json({ message: 'Error al obtener estadísticas' });
+  });
+});
+
+// 2. Paquetes recientes para el dashboard
+app.get('/packages/recent', (req, res) => {
+  const limit = parseInt(req.query.limit) || 5;
+  
+  db.query(`
+    SELECT 
+      p.id,
+      CONCAT('PAQ-', LPAD(p.id, 6, '0')) as tracking_number,
+      CONCAT(a.city, ', ', a.state) as destination,
+      CASE 
+        WHEN p.delivered_at IS NOT NULL THEN 'entregado'
+        WHEN p.out_for_delivery_at IS NOT NULL THEN 'en reparto'
+        WHEN p.in_transit_at IS NOT NULL THEN 'en tránsito'
+        WHEN p.dispatched_at IS NOT NULL THEN 'procesamiento'
+        ELSE 'registrado'
+      END as status
+    FROM packages p
+    LEFT JOIN addresses a ON p.address_id = a.id
+    ORDER BY p.registered_at DESC
+    LIMIT ?`,
+    [limit],
+    (err, results) => {
+      if (err) {
+        console.error('Error en packages/recent:', err);
+        return res.status(500).json({ message: 'Error al obtener paquetes recientes' });
+      }
+      res.json(results);
+    }
+  );
+});
+
+
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
+
 ```
 
 ### Encender Servidor Express js
