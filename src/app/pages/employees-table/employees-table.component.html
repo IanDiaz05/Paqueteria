@@ -27,16 +27,15 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive mb-5">
-            <p-table 
-                [value]="employees" 
-                [paginator]="true" 
-                [rows]="10" 
-                [rowsPerPageOptions]="[5, 10, 20]" 
-                [responsiveLayout]="'scroll'" 
-                [tableStyle]="{ 'min-width': '50rem' }"
-                [customSort]="true"
-                stripedRows
+        <p-table 
+            [value]="employees" 
+            [paginator]="true" 
+            [rows]="10" 
+            [rowsPerPageOptions]="[5, 10, 20]" 
+            [responsiveLayout]="'scroll'" 
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [customSort]="true"
+            stripedRows
             >
             <ng-template pTemplate="header">
                 <tr>
@@ -121,24 +120,24 @@
                                         <!-- Email -->
                                         <div class="form-group">
                                             <input 
-                                              type="email" 
-                                              class="form-control form-control-user" 
-                                              id="email" 
-                                              placeholder="Correo Electrónico" 
-                                              name="email"
-                                              [(ngModel)]="editingEmployee.email"
-                                              required
-                                              email
-                                              #emailInput="ngModel"
+                                            type="email" 
+                                            class="form-control form-control-user" 
+                                            id="email" 
+                                            placeholder="Correo Electrónico" 
+                                            name="email"
+                                            [(ngModel)]="editingEmployee.email"
+                                            required
+                                            email
+                                            #emailInput="ngModel"
                                             >
                                             @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
-                                              <div class="text-danger small mt-1">
+                                            <div class="text-danger small mt-1">
                                                 @if (emailInput.errors?.['required']) {
-                                                  El email es requerido
+                                                El email es requerido
                                                 } @else if (emailInput.errors?.['email']) {
-                                                  Ingresa un email válido
+                                                Ingresa un email válido
                                                 }
-                                              </div>
+                                            </div>
                                             }
                                         </div>
                             
@@ -209,7 +208,6 @@
                 </tr>
             </ng-template>
         </p-table>
-        </div>
     </div>
 </div>
 

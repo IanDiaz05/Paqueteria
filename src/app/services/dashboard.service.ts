@@ -17,4 +17,8 @@ export class DashboardService {
   getRecentShipments(limit: number = 5): Observable<any> {
     return this.http.get(`${this.apiUrl}/packages/recent?limit=${limit}`);
   }
+
+  getSizeDistribution(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/packages/size-distribution`);
+  }
 }

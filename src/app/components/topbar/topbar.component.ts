@@ -40,12 +40,12 @@ export class TopbarComponent {
 
   logout(): void {
     this.messageService.add({
-      severity: 'error',
+      severity: 'info',
       summary: 'Hasta luego, ' + this.userName,
       life: 3000
     });
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/home');
   }
 
   toggleTheme(): void {

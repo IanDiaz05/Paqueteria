@@ -59,7 +59,8 @@ CREATE TABLE packages (
 ```
 
 ## Llenar la BD con datos random
-````sql
+```sql
+use paqueteria;
 -- Insertar usuarios
 INSERT INTO users (email, password, fname, lname, role) VALUES
 ('cliente1@email.com', 'password123', 'Juan', 'Pérez', 'customer'),
@@ -69,33 +70,32 @@ INSERT INTO users (email, password, fname, lname, role) VALUES
 ('repartidor2@empresa.com', 'delivery123', 'Ana', 'Sánchez', 'delivery');
 
 -- Insertar direcciones
-INSERT INTO addresses (user_id, type, alias, street, ext_number, neighborhood, city, state, zip_code, country) VALUES
-(1, 1, 'Casa', 'Av. Principal', '123', 'Centro', 'Ciudad de México', 'CDMX', '06000', 'México'),
-(1, 2, 'Trabajo', 'Calle Reforma', '456', 'Juárez', 'Ciudad de México', 'CDMX', '06600', 'México'),
-(2, 1, 'Departamento', 'Boulevard López Mateos', '789', 'San Ángel', 'Guadalajara', 'Jalisco', '44100', 'México'),
-(3, 1, 'Oficina Central', 'Paseo de la Reforma', '101', 'Cuauhtémoc', 'Ciudad de México', 'CDMX', '06500', 'México'),
-(4, 1, 'Domicilio Repartidor', 'Calle Norte', '202', 'Industrial', 'Monterrey', 'Nuevo León', '64000', 'México');
+INSERT INTO addresses (street, city, state, zip_code, country, reference) VALUES
+('Av. Principal', 'Ciudad de México', 'CDMX', '06000', 'MEX', 'Casa techo de lamina'),
+('Calle Reforma', 'Ciudad de México', 'CDMX', '06600', 'USA', 'homeless afuera'),
+('Boulevard López Mateos', 'Guadalajara', 'Jalisco', '44100', 'ESP', ''),
+('Paseo de la Reforma', 'Ciudad de México', 'CDMX', '06500', 'USA', ''),
+('Calle Norte', 'Monterrey', 'Nuevo León', '64000', 'MEX', 'detras de oxxo');
 
 -- Insertar paquetes
-INSERT INTO packages (description, weight, size, declared_value, is_fragile, special_instructions) VALUES
-('Documentos importantes', 0.5, 'S', 500.00, FALSE, 'Entregar en recepción'),
-('Laptop nueva', 2.3, 'M', 15000.00, TRUE, 'Manejar con cuidado - frágil'),
-('Ropa deportiva', 1.8, 'M', 1200.00, FALSE, NULL),
-('Jarrones de cerámica', 4.5, 'L', 3500.00, TRUE, 'FRÁGIL - No voltear'),
-('Libros académicos', 3.2, 'L', 800.00, FALSE, NULL);
+INSERT INTO packages (
+  user_id, address_id, delivery_id, description, weight, size, declared_value,
+  is_fragile, recipient_fname, recipient_lname, recipient_phone, recipient_email,
+  registered_at, packaged_at, dispatched_at, in_transit_at, out_for_delivery_at,
+  delivered_at, delivery_notes
+) VALUES
+(1, 2, 3, 'Laptop HP Pavilion', 2.50, 'M', 1200.00, TRUE, 'Carlos', 'Ramírez', '5551234567', 'carlos.r@example.com',
+ '2025-05-01 09:00:00', '2025-05-01 10:00:00', '2025-05-01 12:00:00', '2025-05-01 15:00:00', '2025-05-01 17:00:00', '2025-05-01 19:00:00', 'Handle with care'),
+(4, 5, NULL, 'Box of books', 5.00, 'L', 200.00, FALSE, 'Lucía', 'Gómez', '5559876543', 'lucia.g@example.com',
+ '2025-05-02 08:30:00', '2025-05-02 09:00:00', NULL, NULL, NULL, NULL, 'Drop at front door'),
+(2, 3, 1, 'Smartphone Samsung Galaxy', 0.30, 'S', 850.00, TRUE, 'Miguel', 'Torres', '5551112222', 'miguel.t@example.com',
+ '2025-05-03 14:00:00', '2025-05-03 15:00:00', '2025-05-03 16:00:00', '2025-05-03 18:00:00', '2025-05-03 19:00:00', '2025-05-03 20:00:00', 'Call before delivery'),
+(7, 6, 5, 'Gift package', 1.20, 'S', 50.00, FALSE, 'Ana', NULL, '5553334444', 'ana@example.com',
+ '2025-05-04 11:00:00', '2025-05-04 12:00:00', '2025-05-04 13:00:00', NULL, NULL, NULL, NULL),
+(3, 1, 2, 'Kitchen appliance', 3.75, 'L', 400.00, TRUE, 'Pedro', 'López', '5556667777', 'pedro.l@example.com',
+ '2025-05-05 10:15:00', '2025-05-05 11:00:00', '2025-05-05 13:00:00', '2025-05-05 16:00:00', '2025-05-05 18:00:00', NULL, 'Deliver after 6 PM');
 
--- Insertar envíos
-INSERT INTO shipments (tracking_number, package_id, sender_id, delivery_id, origin_address_id, destination_address_id, status, created_at) VALUES
-('PAQ123456789', 1, 1, 4, 1, 2, 'entregado', '2023-11-01 09:00:00'),
-('PAQ987654321', 2, 2, 5, 3, 1, 'en_reparto', '2023-11-02 10:30:00'),
-('PAQ456123789', 3, 1, 4, 2, 3, 'en_transito', '2023-11-03 11:15:00'),
-('PAQ789456123', 4, 2, NULL, 3, 1, 'registrado', '2023-11-04 14:20:00'),
-('PAQ321654987', 5, 1, 5, 1, 3, 'recolectado', '2023-11-05 16:45:00');
-
--- Actualizar algunos envíos con fechas de entrega
-UPDATE shipments SET delivered_at = '2023-11-01 16:30:00', recipient_signature = 'Juan Pérez' WHERE id = 1;
-UPDATE shipments SET delivered_at = '2023-11-03 13:45:00', recipient_signature = 'María Gómez' WHERE id = 2;
-````
+```
 
 ## Servidor Node para BD
 
@@ -117,7 +117,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
 
 const app = express();
 app.use(cors());
@@ -269,6 +268,8 @@ app.delete('/employees/:id', (req, res) => {
   });
 });
 
+// ######### TABLA DE PAQUETES
+
 // 1. Estadísticas generales del dashboard
 app.get('/dashboard/stats', (req, res) =>  {
   Promise.all([
@@ -291,10 +292,8 @@ app.get('/dashboard/stats', (req, res) =>  {
   });
 });
 
-// 2. Paquetes recientes para el dashboard
+// 2. Paquetes totales para el dashboard
 app.get('/packages/recent', (req, res) => {
-  const limit = parseInt(req.query.limit) || 5;
-  
   db.query(`
     SELECT 
       p.id,
@@ -309,9 +308,7 @@ app.get('/packages/recent', (req, res) => {
       END as status
     FROM packages p
     LEFT JOIN addresses a ON p.address_id = a.id
-    ORDER BY p.registered_at DESC
-    LIMIT ?`,
-    [limit],
+    ORDER BY p.registered_at DESC`,
     (err, results) => {
       if (err) {
         console.error('Error en packages/recent:', err);
@@ -320,6 +317,29 @@ app.get('/packages/recent', (req, res) => {
       res.json(results);
     }
   );
+});
+
+// 3. distribucion tamano de paquetes
+app.get('/packages/size-distribution', (req, res) => {
+  db.query(`
+    SELECT 
+      CASE 
+        WHEN size = 'S' THEN 'Chico'
+        WHEN size = 'M' THEN 'Mediano'
+        WHEN size = 'L' THEN 'Grande'
+        ELSE 'Desconocido'
+      END as size,
+      COUNT(*) as total
+    FROM packages
+    GROUP BY size
+    ORDER BY total DESC
+  `, (err, results) => {
+    if (err) {
+      console.error('Error al obtener la distribución de tamaños:', err);
+      return res.status(500).json({ message: 'Error al obtener la distribución de tamaños' });
+    }
+    res.json(results);
+  });
 });
 
 // nuevo paquete
@@ -394,11 +414,9 @@ app.post('/packages', (req, res) => {
   );
 });
 
-
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
-
 ```
 
 ### Encender Servidor Express js
