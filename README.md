@@ -322,6 +322,78 @@ app.get('/packages/recent', (req, res) => {
   );
 });
 
+// nuevo paquete
+app.post('/packages', (req, res) => {
+  const {
+    fname,
+    lname,
+    email,
+    phone,
+    street,
+    city,
+    state,
+    zipcode,
+    country,
+    reference,
+    description,
+    weight,
+    size,
+    declared_value,
+    is_fragile,
+    delivery_notes,
+    user_id
+  } = req.body;
+
+  // Validar datos obligatorios
+  if (!user_id || !description || !weight || !fname || !street || !city || !state || !zipcode) {
+    return res.status(400).json({ message: 'Faltan datos obligatorios para registrar el paquete' });
+  }
+
+  // Validar tamaño del paquete
+  if (!['S', 'M', 'L'].includes(size)) {
+    return res.status(400).json({ message: 'El tamaño del paquete no es válido' });
+  }
+
+  // Validar peso
+  if (isNaN(weight) || weight <= 0) {
+    return res.status(400).json({ message: 'El peso del paquete no es válido' });
+  }
+
+  // Insertar dirección
+  db.query(
+    'INSERT INTO addresses (street, city, state, zip_code, country, reference) VALUES (?, ?, ?, ?, ?, ?)',
+    [street, city, state, zipcode, country || 'México', reference],
+    (err, addressResult) => {
+      if (err) {
+        console.error('Error al registrar dirección:', err);
+        return res.status(500).json({ message: 'Error al registrar dirección' });
+      }
+
+      const address_id = addressResult.insertId;
+
+      // Insertar paquete
+      db.query(
+        `INSERT INTO packages (
+          user_id, address_id, description, weight, size, declared_value, is_fragile,
+          recipient_fname, recipient_lname, recipient_phone, recipient_email, delivery_notes
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          user_id, address_id, description, weight, size, declared_value || 0, is_fragile || false,
+          fname, lname, phone, email, delivery_notes
+        ],
+        (err, packageResult) => {
+          if (err) {
+            console.error('Error al registrar paquete:', err);
+            return res.status(500).json({ message: 'Error al registrar paquete' });
+          }
+
+          res.status(201).json({ message: 'Paquete registrado correctamente' });
+        }
+      );
+    }
+  );
+});
+
 
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
