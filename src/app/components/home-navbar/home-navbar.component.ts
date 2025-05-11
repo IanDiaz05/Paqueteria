@@ -20,7 +20,7 @@ export class HomeNavbarComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || 'Usuario';
+    this.userName = localStorage.getItem('userName') || sessionStorage.getItem('userName') || '';
   }
 
   logout(): void {
@@ -30,6 +30,7 @@ export class HomeNavbarComponent {
       life: 3000
     });
     this.authService.logout();
-    this.router.navigateByUrl('/login');
+    window.location.reload();
+    this.router.navigate(['/home']);
   }
 }

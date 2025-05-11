@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
     <div class="container">
-        <a class="navbar-brand" [routerLink]="['/']">
+        <a class="navbar-brand" [routerLink]="['/home']">
             <img src="estafota_logo.png" alt="Estafota Logo" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-2" routerLinkActive="active">
-                    <a class="nav-link" routerLink="/"><i class="bi bi-house mr-1"></i>Inicio</a>
+                    <a class="nav-link" routerLink="/home"><i class="bi bi-house mr-1"></i>Inicio</a>
                 </li>
                 <li class="nav-item mr-2" routerLinkActive="active">
                     <a class="nav-link" routerLink="/enviar"><i class="bi bi-box-seam mr-1"></i>Enviar</a>
@@ -26,26 +26,32 @@
                 </li>
                 <!-- Tu nuevo menú de usuario -->
                 <li class="nav-item">
-                    <div class="dropdown no-arrow">
-                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline small"><strong class="h6">{{ userName }}</strong></span>
-                            <i class="bi bi-person-circle lead"></i>
-                        </button>
-                        <ul class="dropdown-menu shadow-lg animated--grow-in">
-                            <li>
-                                <a class="dropdown-item text-secondary" [routerLink]="['/profile']">
-                                    <i class="bi bi-person-lines-fill mr-2"></i>
-                                    Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <button class="dropdown-item text-secondary" (click)="logout()">
-                                    <i class="bi bi-door-open"></i>
-                                    Cerrar sesión
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                    @if (userName!=='') {
+                        <div class="dropdown no-arrow">
+                            <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline small"><strong class="h6">{{ userName }}</strong></span>
+                                <i class="bi bi-person-circle lead"></i>
+                            </button>
+                            <ul class="dropdown-menu shadow-lg animated--grow-in">
+                                <li>
+                                    <a class="dropdown-item text-secondary" [routerLink]="['/profile']">
+                                        <i class="bi bi-person-lines-fill mr-2"></i>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <button class="dropdown-item text-secondary" (click)="logout()">
+                                        <i class="bi bi-door-open"></i>
+                                        Cerrar sesión
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    } @else {
+                        <a class="nav-link" [routerLink]="['/login']">
+                            <span>Iniciar sesión</span>
+                        </a>
+                    }
                 </li>
             </ul>
         </div>
