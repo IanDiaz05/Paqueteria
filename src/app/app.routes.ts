@@ -71,7 +71,6 @@ export const routes: Routes = [
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent },
             { path: 'acerca-de', component: HelpComponent},
-            { path: 'envios', component: EnviosComponent}
         ],
     },
 
@@ -79,7 +78,8 @@ export const routes: Routes = [
         path: '',
         component: HomeLayoutComponent,
         children: [
-            { path: 'home', component: HomeComponent}
+            { path: 'home', component: HomeComponent},
+            { path: 'enviar', component: EnviosComponent}
         ]
     },
 
