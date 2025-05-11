@@ -4,98 +4,60 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Creación de la BD
 
-````
-CREATE DATABASE paqueteria;
+```sql
+CREATE DATABASE IF NOT EXISTS paqueteria;
 USE paqueteria;
 
+-- Tabla de usuarios
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  email VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
   fname VARCHAR(255),
   lname VARCHAR(255),
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
   role ENUM('customer', 'admin', 'delivery') DEFAULT 'customer',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Tabla de Direcciones (simplificada)
+-- Tabla de direcciones (solo para uso en paquetes)
 CREATE TABLE addresses (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT NOT NULL,
-  alias VARCHAR(50) NOT NULL COMMENT 'Casa, Trabajo, etc.',
   street VARCHAR(255) NOT NULL,
-  ext_number VARCHAR(20) NOT NULL,
-  int_number VARCHAR(20),
-  neighborhood VARCHAR(100) NOT NULL,
   city VARCHAR(100) NOT NULL,
   state VARCHAR(100) NOT NULL,
   zip_code VARCHAR(10) NOT NULL,
   country VARCHAR(50) DEFAULT 'México',
-  instructions TEXT,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  reference TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Tabla de Envíos/Paquetes (completa con los 5 estados de Estafeta)
-CREATE TABLE shipments (
+-- Tabla de paquetes (ligada al usuario, dirección y repartidor)
+CREATE TABLE packages (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  tracking_number VARCHAR(20) UNIQUE NOT NULL,
-  
-  -- Información del paquete
+  user_id INT NOT NULL,
+  address_id INT,
+  delivery_id INT, -- Repartidor, puede ser NULL
   description VARCHAR(255) NOT NULL,
-  weight DECIMAL(5,2) NOT NULL COMMENT 'en kg',
-  dimensions VARCHAR(20) COMMENT 'Largo x Ancho x Alto en cm',
-  package_type ENUM('documento', 'paquete', 'sobre', 'caja') NOT NULL,
+  weight DECIMAL(5,2) NOT NULL, -- kg
+  size ENUM('S', 'M', 'L') DEFAULT 'M',
   declared_value DECIMAL(10,2),
   is_fragile BOOLEAN DEFAULT FALSE,
-  special_instructions TEXT,
-  
-  -- Relaciones
-  sender_id INT NOT NULL,
-  recipient_id INT NOT NULL,
-  origin_address_id INT NOT NULL,
-  destination_address_id INT NOT NULL,
-  delivery_person_id INT NULL COMMENT 'Puede ser NULL hasta asignación',
-  
-  -- Estados específicos de Estafeta
-  status ENUM(
-    'recibido_estafeta',  -- Recibido por Estafota
-    'procesamiento',      -- Procesamiento
-    'transito',           -- Tránsito
-    'ruta_entrega',       -- Ruta de entrega
-    'entregado',          -- Entregado
-    'cancelado'           -- Cancelado
-  ) DEFAULT 'recibido_estafeta',
-  
-  -- Fechas importantes
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  received_at DATETIME COMMENT 'Cuando lo recibe Estafota',
-  processed_at DATETIME COMMENT 'Inicio de procesamiento',
-  in_transit_at DATETIME COMMENT 'Cuando sale en tránsito',
-  out_for_delivery_at DATETIME COMMENT 'Cuando sale a reparto',
-  delivered_at DATETIME COMMENT 'Fecha de entrega',
-  cancelled_at DATETIME COMMENT 'Fecha de cancelación',
-  
-  -- Información de entrega
+  recipient_name VARCHAR(255) NOT NULL,
+  recipient_phone VARCHAR(20),
+  registered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  packaged_at DATETIME,
+  dispatched_at DATETIME,
+  in_transit_at DATETIME,
+  out_for_delivery_at DATETIME,
+  delivered_at DATETIME,
   delivery_notes TEXT,
-  recipient_signature VARCHAR(255),
-  
-  -- Llaves foráneas
-  FOREIGN KEY (sender_id) REFERENCES users(id),
-  FOREIGN KEY (recipient_id) REFERENCES users(id),
-  FOREIGN KEY (origin_address_id) REFERENCES addresses(id),
-  FOREIGN KEY (destination_address_id) REFERENCES addresses(id),
-  FOREIGN KEY (delivery_person_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (address_id) REFERENCES addresses(id),
+  FOREIGN KEY (delivery_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
 
-
-
-
-  
-
-
-````
 ## Llenar la BD con datos random
-````
+````sql
 -- Insertar usuarios
 INSERT INTO users (email, password, fname, lname, role) VALUES
 ('cliente1@email.com', 'password123', 'Juan', 'Pérez', 'customer'),
