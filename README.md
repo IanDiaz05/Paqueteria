@@ -5,10 +5,9 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 ## Creación de la BD
 
 ````
-create database paqueteria;
-use paqueteria;
+CREATE DATABASE paqueteria;
+USE paqueteria;
 
--- Primero creamos las tablas sin relaciones
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) NOT NULL,
@@ -19,75 +18,78 @@ CREATE TABLE users (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Tabla de Direcciones (simplificada)
 CREATE TABLE addresses (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
-  type tinyint,
   alias VARCHAR(50) NOT NULL COMMENT 'Casa, Trabajo, etc.',
   street VARCHAR(255) NOT NULL,
-  ext_number VARCHAR(20),
+  ext_number VARCHAR(20) NOT NULL,
   int_number VARCHAR(20),
-  neighborhood VARCHAR(100),
+  neighborhood VARCHAR(100) NOT NULL,
   city VARCHAR(100) NOT NULL,
   state VARCHAR(100) NOT NULL,
   zip_code VARCHAR(10) NOT NULL,
   country VARCHAR(50) DEFAULT 'México',
-  instructions TEXT
+  instructions TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE packages (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  description VARCHAR(255) NOT NULL,
-  weight DECIMAL(5,2) NOT NULL COMMENT 'en kg',
-  size ENUM('S', 'M', 'L'),
-  declared_value DECIMAL(10,2),
-  is_fragile BOOLEAN DEFAULT FALSE,
-  special_instructions TEXT,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Ahora creamos shipments sin las FOREIGN KEY
+-- Tabla de Envíos/Paquetes (completa con los 5 estados de Estafeta)
 CREATE TABLE shipments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   tracking_number VARCHAR(20) UNIQUE NOT NULL,
-  package_id INT NOT NULL,
+  
+  -- Información del paquete
+  description VARCHAR(255) NOT NULL,
+  weight DECIMAL(5,2) NOT NULL COMMENT 'en kg',
+  dimensions VARCHAR(20) COMMENT 'Largo x Ancho x Alto en cm',
+  package_type ENUM('documento', 'paquete', 'sobre', 'caja') NOT NULL,
+  declared_value DECIMAL(10,2),
+  is_fragile BOOLEAN DEFAULT FALSE,
+  special_instructions TEXT,
+  
+  -- Relaciones
   sender_id INT NOT NULL,
-  delivery_id INT COMMENT 'Repartidor asignado',
+  recipient_id INT NOT NULL,
   origin_address_id INT NOT NULL,
   destination_address_id INT NOT NULL,
+  delivery_person_id INT NULL COMMENT 'Puede ser NULL hasta asignación',
+  
+  -- Estados específicos de Estafeta
   status ENUM(
-    'registrado', 
-    'recolectado', 
-    'en_centro', 
-    'en_transito', 
-    'en_reparto', 
-    'entregado', 
-    'fallido',
-    'cancelado'
-  ) DEFAULT 'registrado',
+    'recibido_estafeta',  -- Recibido por Estafota
+    'procesamiento',      -- Procesamiento
+    'transito',           -- Tránsito
+    'ruta_entrega',       -- Ruta de entrega
+    'entregado',          -- Entregado
+    'cancelado'           -- Cancelado
+  ) DEFAULT 'recibido_estafeta',
+  
+  -- Fechas importantes
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  delivered_at DATETIME,
+  received_at DATETIME COMMENT 'Cuando lo recibe Estafota',
+  processed_at DATETIME COMMENT 'Inicio de procesamiento',
+  in_transit_at DATETIME COMMENT 'Cuando sale en tránsito',
+  out_for_delivery_at DATETIME COMMENT 'Cuando sale a reparto',
+  delivered_at DATETIME COMMENT 'Fecha de entrega',
+  cancelled_at DATETIME COMMENT 'Fecha de cancelación',
+  
+  -- Información de entrega
   delivery_notes TEXT,
-  recipient_signature VARCHAR(255)
+  recipient_signature VARCHAR(255),
+  
+  -- Llaves foráneas
+  FOREIGN KEY (sender_id) REFERENCES users(id),
+  FOREIGN KEY (recipient_id) REFERENCES users(id),
+  FOREIGN KEY (origin_address_id) REFERENCES addresses(id),
+  FOREIGN KEY (destination_address_id) REFERENCES addresses(id),
+  FOREIGN KEY (delivery_person_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE addresses ADD CONSTRAINT fk_address_user
-FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
-ALTER TABLE shipments ADD CONSTRAINT fk_shipment_package
-FOREIGN KEY (package_id) REFERENCES packages(id);
 
-ALTER TABLE shipments ADD CONSTRAINT fk_shipment_sender
-FOREIGN KEY (sender_id) REFERENCES users(id);
 
-ALTER TABLE shipments ADD CONSTRAINT fk_shipment_delivery
-FOREIGN KEY (delivery_id) REFERENCES users(id);
-
-ALTER TABLE shipments ADD CONSTRAINT fk_shipment_origin
-FOREIGN KEY (origin_address_id) REFERENCES addresses(id);
-
-ALTER TABLE shipments ADD CONSTRAINT fk_shipment_destination
-FOREIGN KEY (destination_address_id) REFERENCES addresses(id);
   
 
 
