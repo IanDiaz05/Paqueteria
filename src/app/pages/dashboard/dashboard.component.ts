@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardService } from '../../services/dashboard.service';
 import { StatCardComponent } from '../../components/shared/stat-card/stat-card.component';
+import { MinicardComponent } from '../../components/minicard/minicard.component';
 
 @Component({
   standalone: true,
   imports: [
-    CommonModule, StatCardComponent
-    // NgClass y otras directivas necesarias
+    CommonModule, StatCardComponent, MinicardComponent
   ],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

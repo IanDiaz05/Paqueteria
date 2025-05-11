@@ -13,21 +13,22 @@
     <div class="row g-4">
       <!-- Tarjetas de estadísticas -->
       <div class="col-md-3">
-        <app-stat-card 
-          title="Envíos Totales" 
-          [value]="dashboardData?.totalShipments || 0" 
-          icon="bi-box-seam"
-          colorClass="bg-primary">
-        </app-stat-card>
+        <app-minicard 
+        borderColor="primary"
+        title="Envíos Totales" 
+        content="{{dashboardData?.totalShipments || 0}}"
+        icon="bi-box-seam"
+        />
       </div>
       <div class="col-md-3">
-        <app-stat-card 
-          title="Entregados" 
-          [value]="dashboardData?.delivered || 0" 
-          icon="bi-check-circle"
-          colorClass="bg-success">
-        </app-stat-card>
+        <app-minicard 
+        borderColor="success"
+        title="Envíos Entregados" 
+        content="{{dashboardData?.delivered || 0}}"
+        icon="bi-check-circle"
+        />
       </div>
+      
       <!-- Tabla de envíos recientes -->
       <div class="col-12">
         <div class="card">
