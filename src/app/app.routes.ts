@@ -79,7 +79,8 @@ export const routes: Routes = [
         component: HomeLayoutComponent,
         children: [
             { path: 'home', component: HomeComponent},
-            { path: 'enviar', component: EnviosComponent}
+            { path: 'enviar', component: EnviosComponent},
+            { path: 'acerca-de', component: HelpComponent}
         ]
     },
 
