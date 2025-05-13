@@ -158,3 +158,14 @@
         Gracias por elegir nuestro servicio de envío.
     </p>
 </p-dialog>
+
+<p-dialog header="Paquete Registrado" [modal]="true" [(visible)]="visibleConfirm" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <p> 
+        Su paquete ha sido registrado exitosamente. 
+        El número de guía es: <strong>{{ trackingNumber || '' }}</strong>. 
+        Puede rastrear su envío en cualquier momento utilizando este número.
+    </p>
+    <p>
+        Gracias por elegir nuestro servicio de envío. 
+        Si tiene alguna pregunta o necesita asistencia, no dude en contactarnos.
+</p-dialog>

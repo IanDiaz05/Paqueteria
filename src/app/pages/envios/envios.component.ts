@@ -37,8 +37,10 @@ export class EnviosComponent {
     delivery_notes: ''
   };
 
+  trackingNumber: string = '';
   terms_accepted: boolean = false;
   visible: boolean = false;
+  visibleConfirm: boolean = false;
 
   onNewPackage() {
     if (!this.terms_accepted) {
@@ -86,12 +88,8 @@ export class EnviosComponent {
     this.packagesService.newPackage(newPackage).subscribe({
       next: (response: any) => {
         console.log('Paquete registrado correctamente:', response.message);
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Paquete registrado correctamente',
-          detail: `Tu número de guía es: ${response.trackingNumber}`,
-          life: 5000
-        });
+        this.trackingNumber = response.trackingNumber; // Asignar el número de guía
+        this.visibleConfirm = true; // Mostrar el diálogo
         this.resetForm(); // Limpia el formulario después de registrar
       },
       error: (error) => {
@@ -131,5 +129,9 @@ export class EnviosComponent {
 
   showDialog() {
     this.visible = true;
+  }
+
+  confirmPackage() {
+    this.visibleConfirm = true;
   }
 }
