@@ -110,7 +110,7 @@ npm install express mysql2 bcryptjs jsonwebtoken cors body-parser
 
 Despues, en la carpeta del backend crear el archivo `index.js`, y pegar el siguiente codigo:
 
-```js
+```
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
@@ -317,7 +317,8 @@ app.get('/packages/recent', (req, res) => {
       res.json(results);
     }
   );
-});
+}
+);
 
 // 3. distribucion tamano de paquetes
 app.get('/packages/size-distribution', (req, res) => {
@@ -341,6 +342,97 @@ app.get('/packages/size-distribution', (req, res) => {
     res.json(results);
   });
 });
+// Estadísticas de estados de paquetes
+app.get('/packages/status-distribution', (req, res) => {
+  db.query(`
+    SELECT 
+      CASE 
+        WHEN delivered_at IS NOT NULL THEN 'Entregado'
+        WHEN out_for_delivery_at IS NOT NULL THEN 'En reparto'
+        WHEN in_transit_at IS NOT NULL THEN 'En tránsito'
+        WHEN dispatched_at IS NOT NULL THEN 'Procesando'
+        ELSE 'Registrado'
+      END as status,
+      COUNT(*) as total,
+      ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM packages), 1) as percentage
+    FROM packages
+    GROUP BY status
+    ORDER BY total DESC
+  `, (err, results) => {
+    if (err) return handleError(res, err, 'Estados de paquetes');
+    res.json(results);
+  });
+});
+
+// Evolución mensual de envíos
+app.get('/packages/monthly-trend', (req, res) => {
+  db.query(`
+    SELECT 
+      DATE_FORMAT(registered_at, '%Y-%m') as month,
+      COUNT(*) as registered,
+      SUM(CASE WHEN delivered_at IS NOT NULL THEN 1 ELSE 0 END) as delivered
+    FROM packages
+    WHERE registered_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+    GROUP BY DATE_FORMAT(registered_at, '%Y-%m')
+    ORDER BY month ASC
+  `, (err, results) => {
+    if (err) return handleError(res, err, 'Tendencia mensual');
+    res.json(results);
+  });
+});
+// Evolución DIARIA de envíos (últimos 15 días)
+app.get('/packages/daily-trend', (req, res) => {
+  db.query(`
+    SELECT 
+      DATE(registered_at) as day,
+      COUNT(*) as registered,
+      SUM(CASE WHEN delivered_at IS NOT NULL THEN 1 ELSE 0 END) as delivered,
+      ROUND(SUM(CASE WHEN delivered_at IS NOT NULL THEN 1 ELSE 0 END) / COUNT(*) * 100, 1) as delivery_rate
+    FROM packages
+    WHERE registered_at >= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+    GROUP BY DATE(registered_at)
+    ORDER BY day ASC
+  `, (err, results) => {
+    if (err) return handleError(res, err, 'Tendencia diaria');
+    
+    // Formatear fechas para mejor visualización (ej: "Lun 15")
+    const formattedResults = results.map(item => ({
+      ...item,
+      day_short: new Date(item.day).toLocaleDateString('es-MX', { 
+        weekday: 'short', 
+        day: 'numeric' 
+      }).replace('.', '') // Ej: "Lun 15"
+    }));
+    
+    res.json(formattedResults);
+  });
+});
+
+// Rendimiento de repartidores
+app.get('/delivery/performance', (req, res) => {
+  db.query(`
+    SELECT 
+      CONCAT(u.fname, ' ', u.lname) as delivery_name,
+      COUNT(p.id) as total,
+      SUM(CASE WHEN p.delivered_at IS NOT NULL THEN 1 ELSE 0 END) as delivered,
+      ROUND(AVG(TIMESTAMPDIFF(HOUR, p.dispatched_at, p.delivered_at)), 1) as avg_hours
+    FROM packages p
+    JOIN users u ON p.delivery_id = u.id
+    WHERE u.role = 'delivery'
+    GROUP BY p.delivery_id, delivery_name
+    ORDER BY delivered DESC
+    LIMIT 5
+  `, (err, results) => {
+    if (err) return handleError(res, err, 'Rendimiento repartidores');
+    res.json(results);
+  });
+});
+
+// Función auxiliar para errores
+function handleError(res, err, context) {
+  console.error(`Error en ${context}:`, err);
+  res.status(500).json({ message: `Error al obtener ${context}` });
+}
 
 // nuevo paquete
 app.post('/packages', (req, res) => {
