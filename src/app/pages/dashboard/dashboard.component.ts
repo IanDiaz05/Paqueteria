@@ -225,6 +225,68 @@ export class DashboardComponent implements OnInit {
       error: (err) => console.error('Error loading delivery performance:', err)
     });
   }
+  dailyData: any;
+  dailyOptions: any;
+
+loadDailyChart(): void {
+  this.dashboardService.getDailyTrend().subscribe({
+    next: (data) => {
+      console.log('Datos diarios:', data);
+      
+      this.dailyData = {
+        labels: data.map((d: any) => d.day_short), // Usamos el formato corto
+        datasets: [
+          {
+            label: 'Registrados',
+            data: data.map((d: any) => d.registered),
+            borderColor: '#36A2EB',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            tension: 0.3,
+            fill: true
+          },
+          {
+            label: 'Entregados',
+            data: data.map((d: any) => d.delivered),
+            borderColor: '#4BC0C0',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.3,
+            fill: true
+          }
+        ]
+      };
+
+      this.dailyOptions = {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              afterLabel: (context: any) => {
+                const index = context.dataIndex;
+                return `Tasa de entrega: ${data[index].delivery_rate}%`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Cantidad de paquetes'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Días'
+            }
+          }
+        }
+      };
+    },
+    error: (err) => console.error('Error loading daily trend:', err)
+  });
+}
 
   trackByShipmentId(index: number, shipment: any): any {
     return shipment.id;

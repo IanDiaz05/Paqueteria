@@ -32,4 +32,7 @@ export class DashboardService {
   getDeliveryPerformance(): Observable<any> {
     return this.http.get(`${this.apiUrl}/delivery/performance`);
   }
+  getDailyTrend(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/packages/daily-trend`);
+}
 }

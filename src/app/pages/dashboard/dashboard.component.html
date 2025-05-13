@@ -33,6 +33,15 @@
         icon="bi-check-circle"
         />
       </div>
+      <div class="col-md-3">
+        <app-minicard 
+        borderColor="success"
+        title="Paquetes Registrados" 
+        content="{{ dashboardStats.totalPackages || '0' }}"
+        icon="bi-check-circle"
+        />
+      </div>
+
     </div>
 
     <!-- tabla paquetes recientes -->
@@ -100,27 +109,7 @@
         </div>
       </div>
 
-
       <div class="container-fluid py-4">
-        <div class="row mb-4">
-          <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-              <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary mb-1">Paquetes Registrados</div>
-                    <div class="h5 mb-0 font-weight-bold">{{ dashboardStats.totalPackages || '0' }}</div>
-                  </div>
-                  <div class="col-auto">
-                    <i class="bi bi-box-seam fa-2x text-gray-300"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Otras tarjetas de resumen... -->
-        </div>
 
         <!-- Gráficos -->
         <div class="row">
@@ -165,6 +154,23 @@
               </div>
             </div>
           </div>
+          <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Tendencia Diaria (Últimos 15 días)</h6>
+            <button (click)="loadDailyChart()" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-arrow-clockwise"></i> Actualizar
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="chart-container" style="height: 550px;">
+              <p-chart 
+                type="line" 
+                [data]="dailyData" 
+                [options]="dailyOptions">
+              </p-chart>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
