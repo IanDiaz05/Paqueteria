@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDashboardData().subscribe({
       next: (data) => {
         this.dashboardData = data;
+        // this.dashboardStats.totalShipments = data.totalShipments;
         this.loading = false;
       },
       error: (err) => {

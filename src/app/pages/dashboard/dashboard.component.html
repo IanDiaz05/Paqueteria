@@ -35,10 +35,10 @@
       </div>
       <div class="col-md-3">
         <app-minicard 
-        borderColor="success"
-        title="Paquetes Registrados" 
-        content="{{ dashboardStats.totalPackages || '0' }}"
-        icon="bi-check-circle"
+        borderColor="warning"
+        title="Paquetes en Reparto" 
+        content="{{ dashboardData?.inTransit || '0' }}"
+        icon="bi-truck"
         />
       </div>
 
@@ -150,7 +150,7 @@
                 </small>
               </div>
               <div class="card-body">
-                <p-chart type="bar" [data]="performanceData" [options]="performanceOptions" height="400"></p-chart>
+                <p-chart type="bar" [data]="performanceData" [options]="performanceOptions" height="550"></p-chart>
               </div>
             </div>
           </div>
