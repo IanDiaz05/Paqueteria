@@ -11,4 +11,8 @@ export class PackagesService {
   newPackage(newPackage: any) {
     return this.http.post(`${this.apiUrl}/packages`, newPackage); // Asegúrate de que `this.apiUrl` sea correcto
   }
+
+  trackPackage(trackingNumber: string) {
+    return this.http.get(`${this.apiUrl}/packages/track/${trackingNumber}`);
+  }
 }

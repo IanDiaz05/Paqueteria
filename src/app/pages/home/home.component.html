@@ -20,6 +20,36 @@
                         <a [routerLink]="['/enviar']" class="btn btn-outline-danger">¿No tienes una guía? Haz un envío ahora</a>
                     </div>
                 </div>
+
+                <!-- dialog de estado del paquete -->
+                <p-dialog header="Estado del Paquete" [modal]="true" [(visible)]="visible" [style]="{ width: '30rem' }">
+                    <div *ngIf="trackingData; else noData">
+                      <h5 class="text-primary">Número de Guía: {{ trackingData.tracking_number }}</h5>
+                      <p><strong>Descripción:</strong> {{ trackingData.description }}</p>
+                      <p><strong>Destinatario:</strong> {{ trackingData.recipient_name }}</p>
+                      <p><strong>Teléfono:</strong> {{ trackingData.recipient_phone }}</p>
+                      <p><strong>Email:</strong> {{ trackingData.recipient_email }}</p>
+                      <p><strong>Destino:</strong> {{ trackingData.destination }}</p>
+                      <p><strong>Estado:</strong> <span class="badge bg-success">{{ trackingData.status }}</span></p>
+                      <p><strong>Notas:</strong> {{ trackingData.delivery_notes || 'Sin notas' }}</p>
+                      <hr>
+                      <h6>Fechas del Proceso:</h6>
+                      <ul class="list-unstyled">
+                        <li><strong>Registrado:</strong> {{ trackingData.registered_at || 'N/A' }}</li>
+                        <li><strong>Empaquetado:</strong> {{ trackingData.packaged_at || 'N/A' }}</li>
+                        <li><strong>Despachado:</strong> {{ trackingData.dispatched_at || 'N/A' }}</li>
+                        <li><strong>En tránsito:</strong> {{ trackingData.in_transit_at || 'N/A' }}</li>
+                        <li><strong>En reparto:</strong> {{ trackingData.out_for_delivery_at || 'N/A' }}</li>
+                        <li><strong>Entregado:</strong> {{ trackingData.delivered_at || 'N/A' }}</li>
+                      </ul>
+                    </div>
+                    <ng-template #noData>
+                      <p class="text-danger">No se encontraron datos para el número de guía proporcionado.</p>
+                    </ng-template>
+                    <div class="flex justify-end gap-2">
+                      <button type="button" class="btn btn-danger" (click)="visible = false">Cerrar</button>
+                    </div>
+                  </p-dialog>
             </div>
         </div>
     </div>

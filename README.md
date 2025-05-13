@@ -3,7 +3,6 @@
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
 ## Creación de la BD
-
 ```sql
 CREATE DATABASE IF NOT EXISTS paqueteria;
 USE paqueteria;
@@ -18,6 +17,8 @@ CREATE TABLE users (
   role ENUM('customer', 'admin', 'delivery') DEFAULT 'customer',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+update users set role = 'admin' where id = 1;
 
 -- Tabla de direcciones (solo para uso en paquetes)
 CREATE TABLE addresses (
@@ -58,7 +59,6 @@ CREATE TABLE packages (
   FOREIGN KEY (delivery_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
-
 ## Llenar la BD con datos random
 ```sql
 use paqueteria;
@@ -96,7 +96,6 @@ INSERT INTO packages (
  '2025-05-04 11:00:00', '2025-05-04 12:00:00', '2025-05-04 13:00:00', NULL, NULL, NULL, NULL, 'PAQ-000004'),
 (3, 1, 2, 'Kitchen appliance', 3.75, 'L', 400.00, TRUE, 'Pedro', 'López', '5556667777', 'pedro.l@example.com',
  '2025-05-05 10:15:00', '2025-05-05 11:00:00', '2025-05-05 13:00:00', '2025-05-05 16:00:00', '2025-05-05 18:00:00', NULL, 'Deliver after 6 PM', 'PAQ-000005');
-
 ```
 
 ## Servidor Node para BD
@@ -299,7 +298,7 @@ app.get('/packages/recent', (req, res) => {
   db.query(`
     SELECT 
       p.id,
-      CONCAT('PAQ-', LPAD(p.id, 6, '0')) as tracking_number,
+      p.tracking_number,
       CONCAT(a.city, ', ', a.state) as destination,
       CASE 
         WHEN p.delivered_at IS NOT NULL THEN 'entregado'
@@ -436,7 +435,7 @@ function handleError(res, err, context) {
   res.status(500).json({ message: `Error al obtener ${context}` });
 }
 
-// nuevo paquete
+// registrar paquete
 app.post('/packages', (req, res) => {
   const {
     fname,
@@ -455,7 +454,7 @@ app.post('/packages', (req, res) => {
     declared_value,
     is_fragile,
     delivery_notes,
-    user_id
+    user_id,
   } = req.body;
 
   // Validar datos obligatorios
@@ -501,11 +500,70 @@ app.post('/packages', (req, res) => {
             return res.status(500).json({ message: 'Error al registrar paquete' });
           }
 
-          res.status(201).json({ message: 'Paquete registrado correctamente' });
+          const packageId = packageResult.insertId;
+          const trackingNumber = `PAQ-${String(packageId).padStart(6, '0')}`;
+
+          // Actualizar el paquete con el número de guía
+          db.query(
+            'UPDATE packages SET tracking_number = ? WHERE id = ?',
+            [trackingNumber, packageId],
+            (err) => {
+              if (err) {
+                console.error('Error al actualizar número de guía:', err);
+                return res.status(500).json({ message: 'Error al actualizar número de guía' });
+              }
+
+              res.status(201).json({ message: 'Paquete registrado correctamente', trackingNumber });
+            }
+          );
         }
       );
     }
   );
+});
+
+// tracking de paquete
+app.get('/packages/track/:trackingNumber', (req, res) => {
+  const { trackingNumber } = req.params;
+
+  db.query(`
+    SELECT 
+      p.id,
+      p.tracking_number,
+      p.description,
+      CONCAT(p.recipient_fname, ' ', p.recipient_lname) as recipient_name,
+      p.recipient_phone,
+      p.recipient_email,
+      CONCAT(a.street, ', ', a.city, ', ', a.state, ', ', a.zip_code, ', ', a.country) as destination,
+      CASE 
+        WHEN p.delivered_at IS NOT NULL THEN 'Entregado'
+        WHEN p.out_for_delivery_at IS NOT NULL THEN 'En reparto'
+        WHEN p.in_transit_at IS NOT NULL THEN 'En tránsito'
+        WHEN p.dispatched_at IS NOT NULL THEN 'Procesando'
+        ELSE 'Registrado'
+      END as status,
+      p.registered_at,
+      p.packaged_at,
+      p.dispatched_at,
+      p.in_transit_at,
+      p.out_for_delivery_at,
+      p.delivered_at,
+      p.delivery_notes
+    FROM packages p
+    LEFT JOIN addresses a ON p.address_id = a.id
+    WHERE p.tracking_number = ?
+  `, [trackingNumber], (err, results) => {
+    if (err) {
+      console.error('Error al rastrear el paquete:', err);
+      return res.status(500).json({ message: 'Error al rastrear el paquete' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'Paquete no encontrado' });
+    }
+
+    res.json(results[0]);
+  });
 });
 
 app.listen(3000, () => {
