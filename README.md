@@ -52,6 +52,7 @@ CREATE TABLE packages (
   out_for_delivery_at DATETIME,
   delivered_at DATETIME,
   delivery_notes TEXT,
+  tracking_number VARCHAR(20) UNIQUE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (address_id) REFERENCES addresses(id),
   FOREIGN KEY (delivery_id) REFERENCES users(id)
@@ -61,6 +62,7 @@ CREATE TABLE packages (
 ## Llenar la BD con datos random
 ```sql
 use paqueteria;
+
 -- Insertar usuarios
 INSERT INTO users (email, password, fname, lname, role) VALUES
 ('cliente1@email.com', 'password123', 'Juan', 'Pérez', 'customer'),
@@ -82,18 +84,18 @@ INSERT INTO packages (
   user_id, address_id, delivery_id, description, weight, size, declared_value,
   is_fragile, recipient_fname, recipient_lname, recipient_phone, recipient_email,
   registered_at, packaged_at, dispatched_at, in_transit_at, out_for_delivery_at,
-  delivered_at, delivery_notes
+  delivered_at, delivery_notes, tracking_number
 ) VALUES
 (1, 2, 3, 'Laptop HP Pavilion', 2.50, 'M', 1200.00, TRUE, 'Carlos', 'Ramírez', '5551234567', 'carlos.r@example.com',
- '2025-05-01 09:00:00', '2025-05-01 10:00:00', '2025-05-01 12:00:00', '2025-05-01 15:00:00', '2025-05-01 17:00:00', '2025-05-01 19:00:00', 'Handle with care'),
+ '2025-05-01 09:00:00', '2025-05-01 10:00:00', '2025-05-01 12:00:00', '2025-05-01 15:00:00', '2025-05-01 17:00:00', '2025-05-01 19:00:00', 'Handle with care', 'PAQ-000001'),
 (4, 5, NULL, 'Box of books', 5.00, 'L', 200.00, FALSE, 'Lucía', 'Gómez', '5559876543', 'lucia.g@example.com',
- '2025-05-02 08:30:00', '2025-05-02 09:00:00', NULL, NULL, NULL, NULL, 'Drop at front door'),
+ '2025-05-02 08:30:00', '2025-05-02 09:00:00', NULL, NULL, NULL, NULL, 'Drop at front door', 'PAQ-000002'),
 (2, 3, 1, 'Smartphone Samsung Galaxy', 0.30, 'S', 850.00, TRUE, 'Miguel', 'Torres', '5551112222', 'miguel.t@example.com',
- '2025-05-03 14:00:00', '2025-05-03 15:00:00', '2025-05-03 16:00:00', '2025-05-03 18:00:00', '2025-05-03 19:00:00', '2025-05-03 20:00:00', 'Call before delivery'),
+ '2025-05-03 14:00:00', '2025-05-03 15:00:00', '2025-05-03 16:00:00', '2025-05-03 18:00:00', '2025-05-03 19:00:00', '2025-05-03 20:00:00', 'Call before delivery', 'PAQ-000003'),
 (7, 6, 5, 'Gift package', 1.20, 'S', 50.00, FALSE, 'Ana', NULL, '5553334444', 'ana@example.com',
- '2025-05-04 11:00:00', '2025-05-04 12:00:00', '2025-05-04 13:00:00', NULL, NULL, NULL, NULL),
+ '2025-05-04 11:00:00', '2025-05-04 12:00:00', '2025-05-04 13:00:00', NULL, NULL, NULL, NULL, 'PAQ-000004'),
 (3, 1, 2, 'Kitchen appliance', 3.75, 'L', 400.00, TRUE, 'Pedro', 'López', '5556667777', 'pedro.l@example.com',
- '2025-05-05 10:15:00', '2025-05-05 11:00:00', '2025-05-05 13:00:00', '2025-05-05 16:00:00', '2025-05-05 18:00:00', NULL, 'Deliver after 6 PM');
+ '2025-05-05 10:15:00', '2025-05-05 11:00:00', '2025-05-05 13:00:00', '2025-05-05 16:00:00', '2025-05-05 18:00:00', NULL, 'Deliver after 6 PM', 'PAQ-000005');
 
 ```
 

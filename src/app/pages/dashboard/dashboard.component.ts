@@ -103,8 +103,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-
-    loadStatusDistribution(): void {
+  loadStatusDistribution(): void {
     this.dashboardService.getStatusDistribution().subscribe({
       next: (data) => {
         this.statusData = {
@@ -288,9 +287,8 @@ loadDailyChart(): void {
   });
 }
 
-  trackByShipmentId(index: number, shipment: any): any {
-    return shipment.id;
-  }
-
+trackByShipmentId(index: number, shipment: any): any {
+  return shipment.id;
+}
 
 }
