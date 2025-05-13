@@ -513,7 +513,11 @@ app.post('/packages', (req, res) => {
                 return res.status(500).json({ message: 'Error al actualizar número de guía' });
               }
 
-              res.status(201).json({ message: 'Paquete registrado correctamente', trackingNumber });
+              // Responder con el trackingNumber
+              res.status(201).json({
+                message: 'Paquete registrado correctamente',
+                trackingNumber: trackingNumber,
+              });
             }
           );
         }
