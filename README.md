@@ -110,7 +110,7 @@ npm install express mysql2 bcryptjs jsonwebtoken cors body-parser
 
 Despues, en la carpeta del backend crear el archivo `index.js`, y pegar el siguiente codigo:
 
-```
+```js
 const express = require('express');
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
