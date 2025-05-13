@@ -99,5 +99,73 @@
           </div>
         </div>
       </div>
+
+
+      <div class="container-fluid py-4">
+        <div class="row mb-4">
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary mb-1">Paquetes Registrados</div>
+                    <div class="h5 mb-0 font-weight-bold">{{ dashboardStats.totalPackages || '0' }}</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="bi bi-box-seam fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Otras tarjetas de resumen... -->
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row">
+          <!-- Distribución de estados -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Estados de Paquetes</h6>
+              </div>
+              <div class="card-body">
+                <p-chart type="pie" [data]="statusData" [options]="statusOptions" height="400"></p-chart>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tendencia mensual -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow">
+              <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Tendencia Mensual</h6>
+                <span class="badge bg-info">
+                  Crecimiento: {{ dashboardStats.growthRate || 0 }}%
+                </span>
+              </div>
+              <div class="card-body">
+                <p-chart type="line" [data]="monthlyData" [options]="monthlyOptions" height="400"></p-chart>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rendimiento repartidores -->
+          <div class="col-lg-12 mb-4">
+            <div class="card shadow">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Top Repartidores</h6>
+                <small *ngIf="dashboardStats.topDelivery" class="text-muted">
+                  Mejor repartidor: {{ dashboardStats.topDelivery }} ({{ dashboardStats.deliveryRate }}% éxito)
+                </small>
+              </div>
+              <div class="card-body">
+                <p-chart type="bar" [data]="performanceData" [options]="performanceOptions" height="400"></p-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-template>

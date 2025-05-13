@@ -21,4 +21,15 @@ export class DashboardService {
   getSizeDistribution(): Observable<any> {
     return this.http.get(`${this.apiUrl}/packages/size-distribution`);
   }
+  getStatusDistribution(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/packages/status-distribution`);
+  }
+
+  getMonthlyTrend(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/packages/monthly-trend`);
+  }
+
+  getDeliveryPerformance(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/delivery/performance`);
+  }
 }
