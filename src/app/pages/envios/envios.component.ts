@@ -47,10 +47,9 @@ export class EnviosComponent {
         summary: 'Términos no aceptados',
         detail: 'Por favor, acepta los términos y condiciones para continuar.',
         life: 3000
-      })
+      });
       return;
     }
-    console.log('Paquete a enviar:', this.package);
   
     // Obtener el token del almacenamiento
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -69,7 +68,6 @@ export class EnviosComponent {
     try {
       const decodedToken: any = jwtDecode(token);
       user_id = decodedToken.id; // Asegúrate de que el campo `id` exista en el token
-      console.log('ID de usuario decodificado:', user_id);
     } catch (error) {
       console.error('Error al decodificar el token:', error);
       this.messageService.add({
@@ -91,8 +89,8 @@ export class EnviosComponent {
         this.messageService.add({
           severity: 'info',
           summary: 'Paquete registrado correctamente',
-          detail: 'Enviaremos tu paquete a la brevedad',
-          life: 3000
+          detail: `Tu número de guía es: ${response.trackingNumber}`,
+          life: 5000
         });
         this.resetForm(); // Limpia el formulario después de registrar
       },
